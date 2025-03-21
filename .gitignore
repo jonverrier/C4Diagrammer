@@ -1,0 +1,9 @@
+.qodo/
+.cursor/
+.vscode/
+
+dist/
+
+node_modules/
+
+.qodo

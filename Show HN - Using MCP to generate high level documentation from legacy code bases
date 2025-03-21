@@ -1,0 +1,29 @@
+
+Show HN: AI-Powered Documentation Generator for Legacy Codebases
+
+I've built a tool that automatically generates comprehensive documentation for legacy codebases using the Model Context Protocol (MCP). As a former CIO who managed teams working with millions of lines of Visual Basic, Sybase, and Oracle Forms code, I feel the pain of  maintaining and onboarding developers to legacy systems.
+
+The Problem:
+- Legacy codebases are notoriously difficult to understand and navigate
+- Onboarding new developers takes months
+- Making changes safely requires deep institutional knowledge
+- Business stakeholders lack visibility into system architecture
+
+The Solution:
+I've created an MCP-based tool that:
+- Automatically scans your entire codebase
+- Generates README files at each level of the directory structure
+- Creates C4 architecture diagrams showing system components and relationships
+- Builds a complete documentation hierarchy from high-level architecture to implementation details
+
+The tool helps teams:
+- Onboard developers faster with clear system documentation
+- Make changes confidently with better understanding of components
+- Communicate system architecture to stakeholders effectively
+- Maintain living documentation that evolves with the codebase
+
+Have a look / try it out:
+GitHub: https://github.com/jonverrier/McpDoc
+License: MIT
+
+I'd love to hear your thoughts.
