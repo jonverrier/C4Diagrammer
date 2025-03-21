@@ -1,6 +1,7 @@
 /**
  * This module provides types and functions for generating README documentation.
- * It handles validation and expansion of prompts for creating README.McpDoc.md files in source directories.
+ * It handles validation and expansion of prompts for creating README.McpDoc.md files in source directories, 
+ * prompting the LLM to create a summary of each source file it finds.
  * 
  * Copyright Jon Verrier, 2025
  */
