@@ -1,51 +1,49 @@
 # McpDoc Source Code Documentation
 
-## File Summaries
+## GenerateComponentC4Prompt.ts
+Provides functionality for generating component-level C4 diagrams. Handles validation and expansion of prompts for creating C4Component.McpDoc.md files containing Mermaid.js C4 component diagrams in source directories.
 
-### GenerateComponentC4Prompt.ts
-Module for generating C4 component diagrams. Provides types and functions for creating C4Component.McpDoc.md files containing Mermaid.js C4 component diagrams in source directories. Includes validation and prompt expansion functionality.
+## GenerateReadMePrompt.ts
+Provides functionality for generating README documentation. Validates and expands prompts for creating README.McpDoc.md files in source directories, instructing LLMs to summarize source files.
 
-### GenerateReadMePrompt.ts
-Core module for README documentation generation. Handles validation and expansion of prompts for creating README.McpDoc.md files in source directories. Supports configurable language selection and word count parameters.
+## GenerateRollupC4Prompt.ts
+Provides functionality for generating high-level C4 architecture diagrams. Contains validation and prompt logic for creating either C4 Context or Container level diagrams that aggregate component-level details.
 
-### GenerateRollupC4Prompt.ts
-Generates high-level C4 architecture diagrams. Creates either Context or Container level diagrams that aggregate component-level details across the codebase. Implements validation and prompt generation following Mermaid.js syntax.
+## index.ts
+Entry point that initializes and connects the MCP server.
 
-### index.ts
-Entry point for the application that initializes and connects the server using the connectServer function from McpIndex.
+## McpBridgeTypes.ts
+Defines core interfaces for the MCP Documenter, including base types for prompt arguments, validation functions, and prompt expansion functions.
 
-### McpBridgeTypes.ts
-Defines core interfaces and types for the MCP Documenter. Includes base interfaces for prompt arguments, validation functions, and prompt expansion. Essential for type safety across the application.
+## McpFunctions.ts
+Implements MCP server function handlers for working with Mermaid diagrams, including detecting diagram types and previewing diagrams in browsers.
 
-### McpFunctions.ts
-Implements function handlers for the Model Context Protocol server. Provides tools for working with Mermaid diagrams, including diagram type detection and preview functionality.
+## McpIndex.ts
+Main entry point for the MCP Documenter server. Initializes the server, adds necessary functions and prompts, and starts the server.
 
-### McpIndex.ts
-Main entry point module that initializes the MCP Documenter server. Sets up server configuration, adds functions, prompts, and resources before starting the server.
+## McpPrompts.ts
+Defines prompt handlers for the MCP server to generate various types of documentation including READMEs and C4 diagrams.
 
-### McpPrompts.ts
-Manages prompts for the MCP Documenter server. Implements handlers for generating documentation including README files and C4 diagrams at different levels.
+## McpResources.ts
+Provides resources to return documentation prompts. Implements resource handlers for listing and reading available documentation resources.
 
-### McpResources.ts
-Provides resource management for documentation prompts. Handles listing and reading of documentation resources like README and C4 diagram templates.
+## McpThrow.ts
+Implements error handling utilities for MCP Documenter. Provides functions to throw standardized MCP errors with specific error codes.
 
-### McpThrow.ts
-Error handling module for MCP operations. Implements specialized error throwing functions for invalid arguments, internal errors, and method not found scenarios.
+## MermaidTypes.ts
+Defines valid C4 diagram types and provides validation functions to check if strings match valid diagram types.
 
-### MermaidTypes.ts
-Defines and validates C4 diagram types. Provides enumeration of valid C4 diagram types (Context, Component, Container, Deployment) and validation functions.
+## ParseMermaid.ts
+Provides functionality for detecting and validating Mermaid diagram types. Uses mermaid.js to parse diagram text and determine diagram types.
 
-### ParseMermaid.ts
-Implements Mermaid diagram parsing and validation. Uses mermaid.js library to detect diagram types and validate syntax, handling various diagram formats.
+## PreviewMermaid.ts
+Implements functionality for previewing mermaid diagrams in a browser by generating HTML and opening it with the default browser.
 
-### PreviewMermaid.ts
-Enables browser-based preview of Mermaid diagrams. Creates temporary HTML files for diagram visualization and handles cleanup after preview.
+## ProcessMermaidFunctions.ts
+Implements core functions for working with Mermaid diagrams, including argument validation, diagram type detection, parsing, and preview functions.
 
-### ProcessMermaidFunctions.ts
-Core processing module for Mermaid diagrams. Implements functions for detecting, parsing, and previewing diagrams with proper validation and error handling.
+## ShouldRegenerateReadMeFunction.ts
+Provides logic to determine if README.McpDoc.md files should be regenerated based on source file modification timestamps.
 
-### ShouldRegenerateReadMeFunction.ts
-Determines when README files need regeneration. Compares timestamps between source files and documentation to trigger updates when necessary.
-
-### UIStrings.ts
-Central repository for application string constants. Contains names, descriptions, and parameter definitions used throughout the application interface.
+## UIStrings.ts
+Contains string constants used throughout the application, centralizing UI text, prompt names, and descriptions.

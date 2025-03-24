@@ -227,7 +227,7 @@ Your chain of thought:
 3) If you see any non-standard C4 elements, convert them to valid Mermaid C4 elements like Person, Container, or System
 4) Group related nodes in System_Boundary blocks if appropriate
 5) Use System_Ext for external systems or services
-6) Only create relationships between valid elements — refer to components by ID (not just strings). Only use Rel, not Rel_Neighbor
+6) Only create relationships ('Rel()') between valid elements — refer to components by ID (not just strings). Only use 'Rel', not 'Rel_Neighbor'. Link to nodes directly, not to System_Boundary() groups.
 7) Output only valid Mermaid code — no extra commentary or text —  which supports built-in rendering in markdown environments
 8) Verify there are no lexical or syntax errors. If the markdown is not valid mermaid.js, try to diagnose the error using the parse tool and try again    
 ```
@@ -245,7 +245,7 @@ Your chain of thought:
 3) If you see any non-standard C4 elements, convert them to valid Mermaid C4 elements like Person(), Container(), or System().
 4) Group related nodes in System_Boundary() blocks if appropriate.
 5) Use System_Ext() for external systems or services.
-6) Only create relationships (Rel()) between valid elements — refer to components by ID (not just strings). Only use Rel, not Rel_Neighbor.
+6) Only create relationships ('Rel()') between valid elements — refer to components by ID (not just strings). Only use 'Rel', not 'Rel_Neighbor'. Link to nodes directly, not to System_Boundary() groups.
 7) Output only valid Mermaid code — no extra commentary or text —  which supports built-in rendering in markdown environments.
 8) Verify there are no lexical or syntax errors. If the markdown is not valid mermaid.js, try to diagnose the error using the parse tool and try again.
 ```

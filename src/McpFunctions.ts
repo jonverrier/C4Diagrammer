@@ -18,9 +18,6 @@ import {
 
 import { throwMcpInternalError, throwMcpMethodNotFound } from "./McpThrow.js";
 
-import { generateReadmePrompt, IGenerateReadmePromptArgs } from "./GenerateReadMePrompt.js";
-import { generateComponentC4Prompt, IGenerateComponentMermaidC4DiagramArgs } from "./GenerateComponentC4Prompt.js";
-import { generateRollupC4Prompt, IGenerateRollupC4DiagramArgs } from "./GenerateRollupC4Prompt.js";
 import { shouldRegenerateReadMeFunction, IShouldRegenerateReadMeArgs } from "./ShouldRegenerateReadMeFunction.js";
 
 import {
@@ -29,21 +26,24 @@ import {
    sourceFileExtensionsParamDesc,
    detectMermaidDiagramTypeToolName,
    parseMermaidToolName,
-   previewMermaidDiagramToolName,
-   getGenerateReadmePromptFunctionName,
-   getGenerateComponentC4DiagramPromptFunctionName,
-   getGenerateRollupC4DiagramPromptFunctionName,
+   previewMermaidToolName,
+   previewMermaidToolDesc,
    detectMermaidDiagramTypeToolDesc,
    detectmermaidDiagramReturnDesc,
    mermaidParamDesc,
    parseMermaidToolDesc,
    parseMermaidReturnDesc,
-   previewMermaidToolDesc,
    previewMermaidReturnDesc,
    shouldRegenerateReadmeFunctionDesc,
-   shouldRegenerateReadmeFunctionReturnDesc
+   shouldRegenerateReadmeFunctionReturnDesc,
+   previewExistingMermaidToolDesc,
+   previewExistingMermaidToolName,
+   mermaidFileParamName,
+   mermaidFileParamDesc
 } from "./UIStrings.js";
-import { detectMermaidFunction, IProcessMermaidArgs, parseMermaidFunction, previewMermaidFunction } from "./ProcessMermaidFunctions.js";
+
+import { detectMermaidFunction, IProcessExistingMermaidArgs, IProcessMermaidArgs, parseMermaidFunction, previewExistingMermaidFunction, previewMermaidFunction } from "./ProcessMermaidFunctions.js";
+
 import { IFunction } from "./McpBridgeTypes.js";
 
 /**
@@ -57,7 +57,7 @@ export function addFunctions(server: Server): void {
       return {
          tools: [
             /*
-            // Implemneted these as a convenience to the user, but they seem to confuse the LLMs
+            // Implemeneted these as a convenience to the user, but they seem to confuse the LLMs
             {
                name: getGenerateReadmePromptFunctionName,
                description: generateReadmePromptDesc,
@@ -172,7 +172,7 @@ export function addFunctions(server: Server): void {
                }
             },
             {
-               name: previewMermaidDiagramToolName,
+               name: previewMermaidToolName,
                description: previewMermaidToolDesc,
                inputSchema: {
                   type: "object",
@@ -180,6 +180,24 @@ export function addFunctions(server: Server): void {
                      mermaid: { type: "string", description: mermaidParamDesc }
                   },
                   required: ["mermaid"]
+               },
+               outputSchema: {
+                  type: "object",
+                  properties: {
+                     toolResult: { type: "string", description: previewMermaidReturnDesc }
+                  },
+                  required: ["toolResult"]
+               }
+            },
+            {
+               name: previewExistingMermaidToolName,
+               description: previewExistingMermaidToolDesc,
+               inputSchema: {
+                  type: "object",
+                  properties: {
+                     filePath: { type: "string", description: mermaidFileParamDesc }
+                  },
+                  required: ["filePath"]
                },
                outputSchema: {
                   type: "object",
@@ -227,12 +245,22 @@ export function addFunctions(server: Server): void {
             return { content: [{ type: "text", text: result }] };
          }
 
-         case previewMermaidDiagramToolName: {
+         case previewMermaidToolName: {
             let result = await processMermaid(
                { mermaid: request.params.arguments?.mermaid as string | undefined },
                previewMermaidFunction);
             return { content: [{ type: "text", text: result }] };
+         }         
+
+         case previewExistingMermaidToolName: {
+            let result = await processMermaidFile(
+               { filePath: request.params.arguments?.filePath as string | undefined },
+               previewExistingMermaidFunction);
+            return { content: [{ type: "text", text: result }] };
          }
+
+/*
+         // Implemeneted these as a convenience to the user, but they seem to confuse the LLMs
 
          case getGenerateReadmePromptFunctionName: {
             const args = request.params.arguments;
@@ -287,6 +315,7 @@ export function addFunctions(server: Server): void {
             }
             return { content: [{ type: "text", text: prompt }] };
          }
+*/            
 
          default:
             throwMcpMethodNotFound("Tool not found");
@@ -295,6 +324,20 @@ export function addFunctions(server: Server): void {
 }
 
 async function processMermaid(args: IProcessMermaidArgs, tool: IFunction): Promise<string> {
+
+   const validatedArgs = tool.validateArgs(args);
+
+   let result: string = "";
+   try {
+      result = await tool.execute(validatedArgs);
+   }
+   catch (error) {
+      throwMcpInternalError("Error processing mermaid");
+   }
+   return result;
+}
+
+async function processMermaidFile(args: IProcessExistingMermaidArgs, tool: IFunction): Promise<string> {
 
    const validatedArgs = tool.validateArgs(args);
 

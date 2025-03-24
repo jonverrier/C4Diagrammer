@@ -12,7 +12,7 @@ import fs from 'fs';
 
 const delayUntilDelete = 60000;
 
-function generatePreviewHtml(fileContent: string): string {
+export function generatePreviewHtml(fileContent: string): string {
    return `
 <!DOCTYPE html>
 <html>

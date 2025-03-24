@@ -8,13 +8,6 @@
 import { expect } from 'chai';
 import { previewMermaidDiagram, previewMermaidDiagramFromFile } from '../src/PreviewMermaid.js';
 import fs from 'fs';
-import { fileURLToPath } from 'url';
-import path, { dirname } from 'path';
-
-
-// Get __dirname equivalent in ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 describe('PreviewMermaidDiagram', () => {
 
@@ -88,3 +81,5 @@ describe('PreviewMermaidDiagram', () => {
       });
     });   
 });
+
+

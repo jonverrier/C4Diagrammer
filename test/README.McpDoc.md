@@ -1,21 +1,19 @@
 # McpDoc Test Documentation
 
-## Test Module Summaries
+## GenerateComponentC4.test.ts
+Tests the GenerateComponentC4Prompt module's functionality for validating arguments and expanding prompts to generate component-level C4 diagrams, ensuring correct error handling and proper prompt generation.
 
-### GenerateComponentC4.test.ts
-Test suite for the GenerateComponentC4Prompt module. Validates argument handling and prompt expansion for C4 component diagram generation. Tests include validation of root directory arguments, error handling for invalid inputs, and verification of generated prompt content including C4 diagram instructions.
+## GenerateReadMeC4.test.ts
+Tests the GenerateReadMePrompt module's functionality, verifying argument validation, default parameter values, error handling, and prompt expansion for generating README files.
 
-### GenerateReadMeC4.test.ts
-Test suite for the GenerateReadMePrompt module. Verifies argument validation and prompt expansion for README generation. Tests cover handling of optional parameters, default values, error cases for invalid inputs, and proper formatting of generated prompts.
+## GenerateRollupC4.test.ts
+Tests the GenerateRollupC4Prompt module, validating argument handling and prompt expansion for generating system-level C4 diagrams from component-level details across the codebase.
 
-### GenerateRollupC4.test.ts
-Test suite for the GenerateRollupC4Prompt module. Tests validation and expansion of prompts for generating high-level C4 diagrams. Includes tests for different C4 diagram types, argument validation, and proper inclusion of diagram instructions.
+## ParseMermaid.test.ts
+Tests Mermaid diagram parsing functionality, validating the detection of various diagram types and syntax validation with robust error handling for different diagram formats.
 
-### ParseMermaid.test.ts
-Tests for Mermaid diagram parsing functionality. Verifies detection and validation of different diagram types including flowcharts, sequence diagrams, and C4 diagrams. Includes error handling tests and syntax validation with various input formats.
+## PreviewMermaid.test.ts
+Tests the preview functionality for Mermaid diagrams, verifying HTML generation, proper content inclusion, and file handling for both direct diagram text and file-based diagram sources.
 
-### PreviewMermaid.test.ts
-Tests for Mermaid diagram preview functionality. Verifies HTML generation for diagram previews, file handling, and proper inclusion of Mermaid initialization code. Tests both direct diagram preview and file-based preview methods.
-
-### ShouldRegenerateReadMe.test.ts
-Tests for the README regeneration decision logic. Verifies timestamp comparison between source files and README.McpDoc.md files. Includes tests for file extension filtering, multiple extension handling, and various timestamp scenarios.
+## ShouldRegenerateReadMe.test.ts
+Tests the logic for determining if README.McpDoc.md files need regeneration based on source file timestamps, ensuring proper file comparison and error handling.

@@ -5,9 +5,49 @@
  */
 
 import { expect } from 'chai';
-import { detectMermaidDiagramType, parseMermaid, noErrors } from '../src/ParseMermaid.js';
+import { detectMermaidDiagramType, parseMermaid, parseMermaidInBrowser, noErrors } from '../src/ParseMermaid.js';
 
 const mermaidTimeout = 7500; // First load of mermaid seems to take a lot of time & cuases random timeouts
+
+let diagramWithSyntaxError = `C4Component
+    title Component diagram for McpDoc Test Suite
+    
+    Person(tester, "Test Developer", "Maintains test suite")
+    
+    System_Boundary(test_suite, "McpDoc Test Suite") {
+        Component(generator_tests, "Generator Tests", "Tests for README and C4 diagram generation")
+        Component(mermaid_tests, "Mermaid Tests", "Tests for diagram parsing and preview")
+        Component(util_tests, "Utility Tests", "Tests for regeneration logic")
+        
+        Rel(generator_tests, mermaid_tests, "Uses", "Validates diagram output")
+        Rel(mermaid_tests, util_tests, "Uses", "Validates file handling")
+    }
+    
+    System_Ext(chai, "Chai", "Testing assertion library")
+    System_Ext(mermaidjs, "Mermaid.js", "Diagram library being tested")
+    
+    Rel(tester, test_suite, "Maintains", "Writes and runs tests")
+    Rel(mermaid_tests, mermaidjs, "Tests", "Diagram functionality")`;
+
+let diagramWithNoError = `C4Component
+    title Component diagram for McpDoc Test Suite
+    
+    Person(tester, "Test Developer", "Maintains test suite")
+    
+    System_Boundary(test_suite, "McpDoc Test Suite") {
+        Component(generator_tests, "Generator Tests", "Tests for README and C4 diagram generation")
+        Component(mermaid_tests, "Mermaid Tests", "Tests for diagram parsing and preview")
+        Component(util_tests, "Utility Tests", "Tests for regeneration logic")
+        
+        Rel(generator_tests, mermaid_tests, "Uses", "Validates diagram output")
+        Rel(mermaid_tests, util_tests, "Uses", "Validates file handling")
+    }
+    
+    System_Ext(chai, "Chai", "Testing assertion library")
+    System_Ext(mermaidjs, "Mermaid.js", "Diagram library being tested")
+    
+    Rel(tester, generator_tests, "Maintains", "Writes and runs tests")
+    Rel(mermaid_tests, mermaidjs, "Tests", "Diagram functionality")`;    
 
 describe('detectMermaidDiagramType', () => {
    it('should detect a valid flowchart diagram', async () => {
@@ -99,13 +139,23 @@ describe('parseMermaid', () => {
       expect(await parseMermaid(input)).to.equal(noErrors);
    }).timeout(mermaidTimeout);
 
-   it('should detect syntax errors', async () => {
+   it('should detect simple syntax errors', async () => {
       const input = `
             flochart LR
                 A --- > B
         `;
       expect(await parseMermaid(input)).to.not.equal(noErrors);
    }).timeout(mermaidTimeout);
+
+   it('should detect C4 syntax errors', async () => {
+      const input = diagramWithSyntaxError;
+      expect(await parseMermaidInBrowser(input)).to.not.equal(noErrors);
+   }).timeout(mermaidTimeout);
+
+   it('should pass C4 without syntax errors', async () => {
+      const input = diagramWithNoError;
+      expect(await parseMermaidInBrowser(input)).to.equal(noErrors);
+   }).timeout(mermaidTimeout);   
 
    it('should handle empty input', async () => {
       expect(await parseMermaid('')).to.not.equal(noErrors);

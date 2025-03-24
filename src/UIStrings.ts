@@ -22,19 +22,14 @@ export const rootDirectoryParamDesc = 'The root directory to use to scan for sou
 export const languagesParamName = 'Language(s)';
 export const languagesParamDesc = 'The language(s) to direct the model to view as source code. The default is typescript. Other languages can be specified, if you want multiple then use a comma separated list.';
 
-
 export const wordsPerModuleParamName = 'WordsPerModule';
 export const wordsPerModuleParamDesc = 'The number of words to use to summarise each code module. The default is 50.';
 
 export const c4TypeParamName = 'C4Type';
 export const c4TypeParamDesc = 'The type of C4 diagram to generate. C4Context, C4Container, C4Component, or C4Deployment';
 
-// Strings used in Function definitions
-export const getGenerateReadmePromptFunctionName = "get_generate_readme_prompt";
-export const getGenerateComponentC4DiagramPromptFunctionName = "get_generate_component_c4_prompt";
-export const getGenerateRollupC4DiagramPromptFunctionName = "get_generate_rollup_c4_prompt";
-
-export const previewMermaidDiagramToolName = "preview_mermaid_diagram";
+export const mermaidFileParamName = "FilePath";
+export const mermaidFileParamDesc = "The path to the mermaid file to preview.";
 
 // shouldRegenerateReadmeFunction
 export const shouldRegenerateReadmeFunctionName = "should_regenerate_readme";
@@ -63,3 +58,10 @@ export const parseMermaidReturnDesc = "'No errors' if the mermaid is parsed corr
 export const previewMermaidToolName = "preview_mermaid";
 export const previewMermaidToolDesc = "Preview a mermaid diagram represented in a text string using the default browser";
 export const previewMermaidReturnDesc = "'True' if the preview was successful, 'false' otherwise.";
+
+// previewExistingMermaidDiagram
+export const previewExistingMermaidToolName = "preview_existing_mermaid_diagram";
+export const previewExistingMermaidToolDesc = "Preview a mermaid diagram from an existing markdown file using the default browser";
+export const previewExistingMermaidReturnDesc = "'True' if the preview was successful, 'false' otherwise.";
+
+
