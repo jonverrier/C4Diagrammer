@@ -1,6 +1,6 @@
-# McpDoc
+# RepoDocumenter
 
-McpDoc is a Model Context Protocol (MCP) server implementation designed to generate documentation for existing systems. It provides a set of MCP prompts and tools for generating code summaries and C4 architecture diagrams using Mermaid.js.
+RepoDocumenter is a Model Context Protocol (MCP) server implementation designed to generate documentation for existing systems. It provides a set of MCP prompts and tools for generating code summaries and C4 architecture diagrams using Mermaid.js.
 
 [Learn more about MCP](https://www.anthropic.com/news/model-context-protocol).
 [Learn more about C4](https://c4model.com/).
