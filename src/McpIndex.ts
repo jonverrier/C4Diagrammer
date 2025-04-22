@@ -10,10 +10,9 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 
 import { addFunctions } from "./McpFunctions.js";
 import { addPrompts } from "./McpPrompts.js";
-import { addResources } from "./McpResources.js";
 
 const server = new Server({
-  name: "mcp-documenter",
+  name: "mcp-repo-documenter",
   version: "0.1.0",
 }, {
   capabilities: {
@@ -28,8 +27,6 @@ export async function connectServer(): Promise<void> {
    addFunctions(server);
 
    addPrompts(server);
-
-   addResources(server);   
 
    const transport = new StdioServerTransport();
 

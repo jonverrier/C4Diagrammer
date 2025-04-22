@@ -38,14 +38,35 @@ import {
    shouldRegenerateReadmeFunctionReturnDesc,
    previewExistingMermaidToolDesc,
    previewExistingMermaidToolName,
-   mermaidFileParamName,
-   mermaidFileParamDesc
+   mermaidFileParamDesc,
+   listDirectoryParamDesc,
+   listDirectoryReturnDesc,
+   listDirectoryToolDesc,
+   listDirectoryToolName,
+   readFileParamDesc,
+   readFileReturnDesc,
+   readFileToolDesc,
+   readFileToolName,
+   writeFileParamDesc,
+   writeFileReturnDesc,
+   writeFileToolDesc,
+   writeFileToolName
 } from "./UIStrings.js";
-
-import { detectMermaidFunction, IProcessExistingMermaidArgs, IProcessMermaidArgs, parseMermaidFunction, previewExistingMermaidFunction, previewMermaidFunction } from "./ProcessMermaidFunctions.js";
 
 import { IFunction } from "./McpBridgeTypes.js";
 
+import {
+  detectMermaidFunction,
+  IProcessExistingMermaidArgs,
+  IProcessMermaidArgs,
+  parseMermaidFunction,
+  previewExistingMermaidFunction,
+  previewMermaidFunction
+} from "./ProcessMermaidFunctions.js";
+
+import { listDirectoryFunction, readFileFunction, writeFileFunction } from "./FileFunctions.js";
+
+ 
 /**
  * Adds the Mermaid diagram detection and preview tools to the server.
  * @param server The server instance to add the tools to
@@ -56,66 +77,6 @@ export function addFunctions(server: Server): void {
 
       return {
          tools: [
-            /*
-            // Implemeneted these as a convenience to the user, but they seem to confuse the LLMs
-            {
-               name: getGenerateReadmePromptFunctionName,
-               description: generateReadmePromptDesc,
-               inputSchema: {
-                  type: "object",
-                  properties: {
-                      rootDirectory: { type: "string", description: rootDirectoryParamDesc },
-                      language: { type: "string", description: languagesParamDesc },
-                      wordsPerModule: { type: "number", description: wordsPerModuleParamDesc }
-                  },
-                  required: ["rootDirectory"]
-               },
-               outputSchema: {
-                  type: "object",
-                  properties: {
-                     toolResult: { type: "string", description: generateReadmePromptDesc }
-                  },
-                  required: ["toolResult"]
-               }
-            },
-            {
-               name: getGenerateComponentC4DiagramPromptFunctionName,
-               description: generateComponentC4DiagramPromptDesc,
-               inputSchema: {
-                  type: "object",
-                  properties: {
-                      rootDirectory: { type: "string", description: rootDirectoryParamDesc }
-                  },
-                  required: ["rootDirectory"]
-               },
-               outputSchema: {
-                  type: "object",
-                  properties: {
-                     toolResult: { type: "string", description: generateComponentC4DiagramPromptDesc }
-                  },
-                  required: ["toolResult"]
-               }
-            },            
-            {
-               name: getGenerateRollupC4DiagramPromptFunctionName,
-               description: generateRollupC4DiagramPromptDesc,
-               inputSchema: {
-                  type: "object",
-                  properties: {
-                     rootDirectory: { type: "string", description: rootDirectoryParamDesc },
-                     c4Type: { type: "string", description: c4TypeParamDesc }
-                  },
-                  required: ["rootDirectory", "c4Type"]
-               },
-               outputSchema: {
-                  type: "object",
-                  properties: {
-                     toolResult: { type: "string", description: generateRollupC4DiagramPromptDesc }
-                  },
-                  required: ["toolResult"]
-               }
-            },
-            */
             {
                name: shouldRegenerateReadmeFunctionName,
                description: shouldRegenerateReadmeFunctionDesc,
@@ -206,7 +167,62 @@ export function addFunctions(server: Server): void {
                   },
                   required: ["toolResult"]
                }
-            }]
+            },
+            {
+               name: readFileToolName,
+               description: readFileToolDesc,
+               inputSchema: {
+                  type: "object",
+                  properties: {
+                     filePath: { type: "string", description: readFileParamDesc }
+                  },
+                  required: ["filePath"]
+               },
+               outputSchema: {
+                  type: "object",
+                  properties: {
+                     toolResult: { type: "string", description: readFileReturnDesc }
+                  },
+                  required: ["toolResult"]
+               }
+            },
+            {
+               name: writeFileToolName,
+               description: writeFileToolDesc,
+               inputSchema: {
+                  type: "object",
+                  properties: {
+                     filePath: { type: "string", description: writeFileParamDesc }
+                  },
+                  required: ["filePath"]
+               },
+               outputSchema: {
+                  type: "object",
+                  properties: {
+                     toolResult: { type: "string", description: writeFileReturnDesc }
+                  },
+                  required: ["toolResult"]
+               }
+             },
+             {
+               name: listDirectoryToolName,
+               description: listDirectoryToolDesc,
+               inputSchema: {
+                  type: "object",
+                  properties: {
+                     directoryPath: { type: "string", description: listDirectoryParamDesc }
+                  },
+                  required: ["directoryPath"]
+               },
+               outputSchema: {
+                  type: "object",
+                  properties: {
+                     toolResult: { type: "string", description: listDirectoryReturnDesc }
+                  },
+                  required: ["toolResult"]
+               }
+             },            
+         ]
       };
    });
 
@@ -257,66 +273,34 @@ export function addFunctions(server: Server): void {
                { filePath: request.params.arguments?.filePath as string | undefined },
                previewExistingMermaidFunction);
             return { content: [{ type: "text", text: result }] };
-         }
+         }       
 
-/*
-         // Implemeneted these as a convenience to the user, but they seem to confuse the LLMs
-
-         case getGenerateReadmePromptFunctionName: {
-            const args = request.params.arguments;
-            const argStructured: IGenerateReadmePromptArgs = {
-               rootDirectory: args?.rootDirectory as string | undefined,
-               languages: args?.language as string | undefined,
-               wordsPerModule: args?.wordsPerModule as string | undefined
-            }
-            const validatedArgs = generateReadmePrompt.validateArgs(argStructured);
-
-            let prompt: string = "";
-            try {
-               prompt = generateReadmePrompt.expandPrompt(validatedArgs);
-            }
-            catch (error) {
-               throwMcpInternalError(`Error calling ${request.params.name}`);
-            }
-            return { content: [{ type: "text", text: prompt }] };
-         }
-
-         case getGenerateComponentC4DiagramPromptFunctionName: {
-            const args = request.params.arguments;
-            const argStructured: IGenerateComponentMermaidC4DiagramArgs = {
-               rootDirectory: args?.rootDirectory as string | undefined
-            }
-            const validatedArgs = generateComponentC4Prompt.validateArgs(argStructured);
-
-            let prompt: string = "";
-            try {
-               prompt = generateComponentC4Prompt.expandPrompt(validatedArgs);
-            }
-            catch (error) {
-               throwMcpInternalError(`Error calling ${request.params.name}`);
-            }
-            return { content: [{ type: "text", text: prompt }] };
-         }
-
-         case getGenerateRollupC4DiagramPromptFunctionName: {
-            const args = request.params.arguments;
-            const argStructured: IGenerateRollupC4DiagramArgs = {
-               rootDirectory: args?.rootDirectory as string | undefined,
-               c4Type: args?.c4Type as string | undefined
-            }
-            const validatedArgs = generateRollupC4Prompt.validateArgs(argStructured);
-
-            let prompt: string = "";
-            try {
-               prompt = generateRollupC4Prompt.expandPrompt(validatedArgs);
-            }
-            catch (error) {
-               throwMcpInternalError(`Error calling ${request.params.name}`);
-            }
-            return { content: [{ type: "text", text: prompt }] };
-         }
-*/            
-
+         case readFileToolName: {
+            const parsed = readFileFunction.validateArgs( { filePath: request.params.arguments?.filePath as string | undefined });
+            const content = await readFileFunction.execute(parsed);
+            return {
+              content: [{ type: "text", text: content }],
+            };
+          }
+    
+         case writeFileToolName: {
+            const parsed = writeFileFunction.validateArgs({ 
+              filePath: request.params.arguments?.filePath as string | undefined,
+              content: request.params.arguments?.content as string | undefined 
+            });
+            const content = await writeFileFunction.execute(parsed);
+            return {
+              content: [{ type: "text", text: content }],
+            };
+          }
+       
+         case listDirectoryToolName: {
+            const parsed = listDirectoryFunction.validateArgs({ directoryPath: request.params.arguments?.directoryPath as string | undefined });
+            const content = await listDirectoryFunction.execute(parsed);
+            return {
+              content: [{ type: "text", text: content }],
+            };
+          }
          default:
             throwMcpMethodNotFound("Tool not found");
       }

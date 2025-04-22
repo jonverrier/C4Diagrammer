@@ -113,6 +113,7 @@ export const previewMermaidFunction: IFunction = {
    execute: executePreviewMermaid as FnExecuteFunction
 };
 
+// Function to preview a mermaid diagram from a file
 export const previewExistingMermaidFunction: IFunction = {
    name: previewExistingMermaidToolName,
    description: previewExistingMermaidToolDesc,

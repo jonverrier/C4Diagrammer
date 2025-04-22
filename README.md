@@ -1,17 +1,17 @@
-# McpDoc
+# C4Diagrammer
 
-McpDoc is a Model Context Protocol (MCP) server implementation designed to generate documentation for existing systems. It provides a set of MCP prompts and tools for generating code summaries and C4 architecture diagrams using Mermaid.js.
+C4Diagrammer is a Model Context Protocol (MCP) server implementation designed to generate documentation for existing systems. It provides a set of MCP prompts and tools for generating code summaries and C4 architecture diagrams using Mermaid.js.
 
 [Learn more about MCP](https://www.anthropic.com/news/model-context-protocol).
 [Learn more about C4](https://c4model.com/).
 
 The prompts direct the model to walk the directory tree of a system, creating summary documentation as it goes, and then rolling this up to the top level.
 
-1. **For each directory containing 'source code' (you can decide what this is by tailoring the prompt), generate a README.McpDoc.md file.** The concept is that any repo in need of automatic documentation generation is likely too large to fit in the context window, so you need to 'pre-store' summaries with a denser level of information than the source. The prompts direct the model to check file timestamps so we only re-generate summaries when we need to.
+1. **For each directory containing 'source code' (you can decide what this is by tailoring the prompt), generate a README.C4Diagrammer.md file.** The concept is that any repo in need of automatic documentation generation is likely too large to fit in the context window, so you need to 'pre-store' summaries with a denser level of information than the source. The prompts direct the model to check file timestamps so we only re-generate summaries when we need to.
 
-2. **Alongside each README.McpDoc.md, we generate a C4Component diagram** to show the structure of the source modules in the directory.
+2. **Alongside each README.C4Diagrammer.md, we generate a C4Component diagram** to show the structure of the source modules in the directory.
 
-3. **Finally, we roll up all the README.McpDoc.md files into a C4Context and a C4Container diagram in the root directory** to serve as an overview. In principle, you can then navigate all the way from overview diagrams in the root directory through intermediate diagrams in each sub-directory containing source code.
+3. **Finally, we roll up all the README.C4Diagrammer.md files into a C4Context and a C4Container diagram in the root directory** to serve as an overview. In principle, you can then navigate all the way from overview diagrams in the root directory through intermediate diagrams in each sub-directory containing source code.
 
 We use the C4 model, as it aims to align with modern Agile practices by providing "just enough" documentation. The C4 approach emphasizes lightweight, living documentation that evolves alongside the codebase, avoiding the common problem of documentation becoming outdated or irrelevant over time ("documentation rot"). By focusing on essential architectural views at different levels of detail, C4 helps teams maintain useful documentation without creating burdensome maintenance overhead that often plagues more traditional documentation approaches.
 
@@ -126,12 +126,12 @@ Here is another  - this time one MCP Doc drew of itself:
 
 ```mermaid
 C4Container
-    title Container diagram for McpDoc Documentation Generator
+    title Container diagram for C4Diagrammer Documentation Generator
     
-    Person(developer, "Software Developer", "Uses McpDoc to generate documentation")
-    Person(maintainer, "Project Maintainer", "Maintains and extends McpDoc")
+    Person(developer, "Software Developer", "Uses C4Diagrammer to generate documentation")
+    Person(maintainer, "Project Maintainer", "Maintains and extends C4Diagrammer")
     
-    System_Boundary(mcpdoc, "McpDoc Documentation Generator") {
+    System_Boundary(C4Diagrammer, "C4Diagrammer Documentation Generator") {
         Container(mcp_server, "MCP Server", "TypeScript, Node.js", "Model Context Protocol server handling client requests")
         Container(doc_generator, "Documentation Generator", "TypeScript", "Generates README and C4 documentation from source code")
         Container(mermaid_engine, "Mermaid Engine", "TypeScript", "Processes and validates Mermaid diagrams")
@@ -167,9 +167,9 @@ C4Container
 ## Features
 
 - **Documentation Tools**
-  - README generation capabilities - provides a prompt that when used with the MCP filesystem tool, generates a README.McpDoc.md in every directory where the model finds source code. 
-  - C4 diagram generation - provides a prompt that when used with the MCP filesystem tool, generates a C4Component.McpDoc.md in every directory where the model finds source code. 
-  - Rollup C4 diagram generation - provides a prompt that when used with the MCP filesystem tool, generates a 'master' C4Context or C4Container diagram based on the contents of every README.McpDoc.md file that the model finds in the directory system.  
+  - README generation capabilities - provides a prompt that when used with the MCP filesystem tool, generates a README.C4Diagrammer.md in every directory where the model finds source code. 
+  - C4 diagram generation - provides a prompt that when used with the MCP filesystem tool, generates a C4Component.C4Diagrammer.md in every directory where the model finds source code. 
+  - Rollup C4 diagram generation - provides a prompt that when used with the MCP filesystem tool, generates a 'master' C4Context or C4Container diagram based on the contents of every README.C4Diagrammer.md file that the model finds in the directory system.  
 
 - **Mermaid Support**
   - Various tools to help validate & improve quality of generated Mermaid.js diagrams 
@@ -213,13 +213,13 @@ Personally I would only do this with the Claude famility of models which do seem
 1) To generate documentation for each directory containing source code: 
 
 ```code
-Use the filesystem tool to list all subdirectories of {RootDirectory}. Ignore any 'node_modules' subdirectories. Then recursively list the contents of each other subdirectory (apart from any 'node_modules' subdirectories) for typescript files. If the subdirectory contains one or more typescript files, call the mcp_documenter tool 'should_regenerate_readme' to see if the README file should be regenerated. If the README file should be regenerated, then read every typescript file in the subdirectory, and create a 50 word summary of the file in markdown format intended to brief new developers on its content. Accumulate all the summaries and write a concatenated summary into a file named README.McpDoc.md in the same subdirectory, giving an absolute path to the tool.
+Use the filesystem tool to list all subdirectories of {RootDirectory}. Ignore any 'node_modules' subdirectories. Then recursively list the contents of each other subdirectory (apart from any 'node_modules' subdirectories) for typescript files. If the subdirectory contains one or more typescript files, call the mcp_documenter tool 'should_regenerate_readme' to see if the README file should be regenerated. If the README file should be regenerated, then read every typescript file in the subdirectory, and create a 50 word summary of the file in markdown format intended to brief new developers on its content. Accumulate all the summaries and write a concatenated summary into a file named README.C4Diagrammer.md in the same subdirectory, giving an absolute path to the tool.
 ```
 
 2) To generate a C4Component diagram in each directory containing source code:
 
 ```code
-Use the filesystem tool to list all subdirectories of ${RootDirectory}. Ignore the node_modules subdirectory. Then recursively seach each other subdirectory. If the subdirectory contains a file README.McpDoc.md, then read the contents of the file. and generate a C4Component Mermaid.js diagram from the contents. Use the provided tools to parse and validate the generated diagram, and if it is valid, generate a preview, and write the markdown to a file named C4Component.McpDoc.md in the same subdirectory, giving an absolute path to the tool.
+Use the filesystem tool to list all subdirectories of ${RootDirectory}. Ignore the node_modules subdirectory. Then recursively seach each other subdirectory. If the subdirectory contains a file README.C4Diagrammer.md, then read the contents of the file. and generate a C4Component Mermaid.js diagram from the contents. Use the provided tools to parse and validate the generated diagram, and if it is valid, generate a preview, and write the markdown to a file named C4Component.C4Diagrammer.md in the same subdirectory, giving an absolute path to the tool.
 
 Your chain of thought:
 1) Use C4Component for the diagram type (avoid C4_Component, PlantUML syntax, or any unrecognized element)
@@ -237,7 +237,7 @@ In my experience, the 'Chain of Thought' is not really needed by Claude. It seem
 3) To generate a C4Component diagram in each directory containing source code:
 
 ```code
-Use the filesystem tool to list all subdirectories of ${RootDirectory}. Ignore the node_modules subdirectory. Then recursively search each other subdirectory for a file named README.McpDoc.md. Concatenate the contents of all these files, and generate a ${C4Type} Mermaid.js diagram from the contexts. Use the provided tools to parse and validate the generated diagram, and if it is valid, generate a preview, and write the markdown to a file named ${C4Type}.McpDoc.md in the directory ${RootDirectory}.
+Use the filesystem tool to list all subdirectories of ${RootDirectory}. Ignore the node_modules subdirectory. Then recursively search each other subdirectory for a file named README.C4Diagrammer.md. Concatenate the contents of all these files, and generate a ${C4Type} Mermaid.js diagram from the contexts. Use the provided tools to parse and validate the generated diagram, and if it is valid, generate a preview, and write the markdown to a file named ${C4Type}.C4Diagrammer.md in the directory ${RootDirectory}.
 
 Your chain of thought:
 1) Use ${C4Type} for the diagram type (avoid C4_Component, PlantUML syntax, or any unrecognized element).
@@ -257,7 +257,7 @@ The same qualifier applies to 'Chain of Thought'.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/McpDoc.git
+   git clone https://github.com/yourusername/C4Diagrammer.git
    ```
 
 2. Install dependencies:
@@ -289,7 +289,7 @@ To use the MCP server from a host, you need to update your AI development enviro
   "mcpServers": {
     "mcp-documenter": {
       "command": "node",
-      "args": ["YourCodeRoot/McpDoc/dist/src/index.js"]
+      "args": ["YourCodeRoot/C4Diagrammer/dist/src/index.js"]
     },
     "mcp-filesystem": {
       "command": "node",  
@@ -306,14 +306,14 @@ For specific IDE setup instructions, refer to:
 
 ## Documentation
 
-Generated by 'dogfooding' - McpDoc has geneated a README.McpDoc.md and a C4Component.McpDoc.md in each sub-directory, plus a master C4Context and C4Container in the root directory. 
+Generated by 'dogfooding' - C4Diagrammer has geneated a README.C4Diagrammer.md and a C4Component.C4Diagrammer.md in each sub-directory, plus a master C4Context and C4Container in the root directory. 
 
-- `./C4Context.McpDoc.md` - Overview C4Context diagram
-- `./C4Container.McpDoc.md` - Overview C4Container diagram
-- `src/README.McpDoc.md` - Source code documentation
-- `src/C4Component.McpDoc.md` - Source code component diagram 
-- `test/README.McpDoc.md` - Test suite documentation
-- `test/C4Component.McpDoc.md` - Test suite component diagram
+- `./C4Context.C4Diagrammer.md` - Overview C4Context diagram
+- `./C4Container.C4Diagrammer.md` - Overview C4Container diagram
+- `src/README.C4Diagrammer.md` - Source code documentation
+- `src/C4Component.C4Diagrammer.md` - Source code component diagram 
+- `test/README.C4Diagrammer.md` - Test suite documentation
+- `test/C4Component.C4Diagrammer.md` - Test suite component diagram
 
 
 ## Issues

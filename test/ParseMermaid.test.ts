@@ -7,7 +7,7 @@
 import { expect } from 'chai';
 import { detectMermaidDiagramType, parseMermaid, parseMermaidInBrowser, noErrors } from '../src/ParseMermaid.js';
 
-const mermaidTimeout = 7500; // First load of mermaid seems to take a lot of time & cuases random timeouts
+const mermaidTimeout = 10000; // First load of mermaid seems to take a lot of time & cuases random timeouts
 
 let diagramWithSyntaxError = `C4Component
     title Component diagram for McpDoc Test Suite

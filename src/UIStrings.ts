@@ -4,14 +4,14 @@
  * This module contains string constants used throughout the application.
  */
 // Global Names
-export const mcpDocName = 'mcpDoc';
+export const C4DiagrammerName = 'C4Diagrammer';
 
 // Strings used in Prompt definitions 
 export const generateReadmePromptName = 'generate_readme_files';
-export const generateReadmePromptDesc = 'Generate a README.McpDoc.md file for each subdirectory that contains source code.';
+export const generateReadmePromptDesc = 'Generate a README.C4Diagrammer.md file for each subdirectory that contains source code.';
 
 export const generateComponentC4DiagramPromptName = 'generate_component_c4_diagrams';
-export const generateComponentC4DiagramPromptDesc = 'Generate a C4Component.McpDoc.md file for each subdirectory that contains source code.';
+export const generateComponentC4DiagramPromptDesc = 'Generate a C4Component.C4Diagrammer.md file for each subdirectory that contains source code.';
 
 export const generateRollupC4DiagramPromptName = 'generate_rollup_c4_diagram';
 export const generateRollupC4DiagramPromptDesc = 'Generate a C4 diagram of the specific type from the context provided';
@@ -33,14 +33,14 @@ export const mermaidFileParamDesc = "The path to the mermaid file to preview.";
 
 // shouldRegenerateReadmeFunction
 export const shouldRegenerateReadmeFunctionName = "should_regenerate_readme";
-export const shouldRegenerateReadmeFunctionDesc = "Determine if the README.McpDoc.md file should be regenerated for a given directory.";
-export const shouldRegenerateReadmeFunctionReturnDesc = "'True' if the README.McpDoc.md file should be regenerated, 'False' otherwise.";
+export const shouldRegenerateReadmeFunctionDesc = "Determine if the README.C4Diagrammer.md file should be regenerated for a given directory.";
+export const shouldRegenerateReadmeFunctionReturnDesc = "'True' if the README.C4Diagrammer.md file should be regenerated, 'False' otherwise.";
 
 export const directoryParamName = "Directory";
 export const sourceFileExtensionsParamName = "SourceFileExtensions";
 
-export const directoryParamDesc = "The directory to check for the timestamp of the README.McpDoc.md file.";
-export const sourceFileExtensionsParamDesc = "The file extensions to use to check the timestamps of source files in the directory vs. the README.McpDoc.md file."
+export const directoryParamDesc = "The directory to check for the timestamp of the README.C4Diagrammer.md file.";
+export const sourceFileExtensionsParamDesc = "The file extensions to use to check the timestamps of source files in the directory vs. the README.C4Diagrammer.md file."
 
 // detectMermaidDiagramTypeFunction
 export const detectMermaidDiagramTypeToolName = "detect_mermaid_diagram_type";
@@ -64,4 +64,32 @@ export const previewExistingMermaidToolName = "preview_existing_mermaid_diagram"
 export const previewExistingMermaidToolDesc = "Preview a mermaid diagram from an existing markdown file using the default browser";
 export const previewExistingMermaidReturnDesc = "'True' if the preview was successful, 'false' otherwise.";
 
+// readFileFunction
+export const readFileToolName = "read_file";
+export const readFileToolDesc = "Read the complete contents of a file from the file system. " +
+                  "Handles various text encodings and provides detailed error messages " +
+                  "if the file cannot be read. Use this tool when you need to examine " +
+                  "the contents of a single file. Only works within allowed directories.";
+export const readFileReturnDesc = "The contents of the file as a string.";
+export const readFileParamName = "FilePath";
+export const readFileParamDesc = "The path to the file to read.";
 
+// writeFileFunction 
+export const writeFileToolName = "write_file";
+export const writeFileToolDesc = "Create a new file or completely overwrite an existing file with new content. " +
+                  "Use with caution as it will overwrite existing files without warning. " +
+                  "Handles text content with proper encoding. Only works within allowed directories.";
+export const writeFileReturnDesc = "A string confirming the file was written successfully.";
+export const writeFileParamName = "FilePath";
+export const writeFileParamDesc = "The path to the file to write.";
+
+
+// listDirectoryFunction
+export const listDirectoryToolName = "list_directory";
+export const listDirectoryToolDesc = "Get a detailed listing of all files and directories in a specified path. " +
+                 "Results clearly distinguish between files and directories with [FILE] and [DIR] " +
+                 "prefixes. This tool is essential for understanding directory structure and " +
+                 "finding specific files within a directory. Only works within allowed directories.";
+export const listDirectoryReturnDesc = "The contents of the directory as a string.";
+export const listDirectoryParamName = "DirectoryPath";
+export const listDirectoryParamDesc = "The path to the directory to list.";
