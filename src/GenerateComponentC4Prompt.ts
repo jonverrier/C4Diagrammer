@@ -1,6 +1,6 @@
 /**
  * This module provides types and functions for generating C4 component diagrams.
- * It handles validation and expansion of prompts for creating C4Component.McpDoc.md files containing
+ * It handles validation and expansion of prompts for creating C4Component.' + C4DiagrammerName + '.md files containing
  * Mermaid.js C4 component diagrams in source directories.
  * 
  * Copyright Jon Verrier, 2025
@@ -8,7 +8,7 @@
 
 import { throwMcpInvalidArgs } from "./McpThrow.js";
 import { IPrompt, IArgs, FnValidateArgs, FnExpandPrompt } from './McpBridgeTypes.js';
-import { generateComponentC4DiagramPromptDesc, generateComponentC4DiagramPromptName } from "./UIStrings.js";
+import { C4DiagrammerName, generateComponentC4DiagramPromptDesc, generateComponentC4DiagramPromptName } from "./UIStrings.js";
 
 export interface IGenerateComponentMermaidC4DiagramArgs extends IArgs {
    rootDirectory: string | undefined;
@@ -33,22 +33,22 @@ function validateGenerateComponentC4DiagramArgs(args: IGenerateComponentMermaidC
 
 
 /**
- * Generates a prompt to create/update C4Component.McpDoc.md files containing Mermaid.js C4 component diagrams.
- * The prompt instructs to analyze README.McpDoc.md files in each subdirectory and generate corresponding
+ * Generates a prompt to create/update C4Component.' + C4DiagrammerName + '.md files containing Mermaid.js C4 component diagrams.
+ * The prompt instructs to analyze README.' + C4DiagrammerName + '.md files in each subdirectory and generate corresponding
  * component-level C4 diagrams following Mermaid.js syntax and C4 model conventions.
  * 
  * @param args - Object containing rootDirectory parameter
- * @returns A prompt string that will generate C4Component.McpDoc.md files with valid Mermaid.js C4 diagrams
+ * @returns A prompt string that will generate C4Component.' + C4DiagrammerName + '.md files with valid Mermaid.js C4 diagrams
  */
 function expandGenerateComponentC4DiagramPrompt(args: IGenerateComponentMermaidC4DiagramArgs): string {
 
    const { rootDirectory } = args;
 
-   const prompt =`Use the filesystem tool to list all subdirectories of ${rootDirectory}. Ignore the \'node_modules\' subdirectory. Then ` +
-                        'recursively seach each other subdirectory. If the subdirectory contains a file \'README.McpDoc.md\', then read the ' +
+   const prompt =`Use the ${C4DiagrammerName} tool to list all subdirectories of ${rootDirectory}. Ignore the \'node_modules\' subdirectory. Then ` +
+                        `recursively seach each other subdirectory. If the subdirectory contains a file 'README.${C4DiagrammerName}.md', then read the ` +
                         'contents of the file. and generate a C4Component Mermaid.js diagram from the contents. Use the provided tools to parse and ' +
                         'validate the generated diagram, and if it is valid, generate a preview, and write the markdown to a file named ' +
-                        'C4Component.McpDoc.md in the same subdirectory, giving an absolute path to the tool.' +
+                        `C4Component.${C4DiagrammerName}.md in the same subdirectory, giving an absolute path to the tool.` +
                         'Your chain of thought:\n' +
                         '1) Use \'C4Component\' for the diagram type (avoid \'C4_Component\', PlantUML syntax, or any unrecognized element).\n' +
                         '2) Identify the primary user(s) and the main system element(s).\n' +

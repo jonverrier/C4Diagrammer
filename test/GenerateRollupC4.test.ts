@@ -7,6 +7,7 @@
 
 import { expect } from 'chai';
 import { generateRollupC4Prompt } from '../src/GenerateRollupC4Prompt.js';
+import { C4DiagrammerName } from '../src/UIStrings.js';
 
 describe('GenerateRollupC4Prompt', () => {
   describe('validateGenerateRollupC4DiagramArgs', () => {
@@ -68,8 +69,8 @@ describe('GenerateRollupC4Prompt', () => {
       expect(result).to.be.a('string');
       expect(result).to.include('/test/path');
       expect(result).to.include('C4Context');
-      expect(result).to.include('README.McpDoc.md');
-      expect(result).to.include('C4Context.McpDoc.md');
+      expect(result).to.include('README.' + C4DiagrammerName + '.md');
+      expect(result).to.include('C4Context.' + C4DiagrammerName + '.md');
     });
 
     it('should generate correct prompt string for C4Container', () => {
@@ -81,7 +82,7 @@ describe('GenerateRollupC4Prompt', () => {
       const result = generateRollupC4Prompt.expandPrompt(args);
       
       expect(result).to.include('C4Container');
-      expect(result).to.include('C4Container.McpDoc.md');
+      expect(result).to.include('C4Container.' + C4DiagrammerName + '.md');
     });
 
     it('should include all required C4 diagram instructions', () => {
@@ -100,7 +101,7 @@ describe('GenerateRollupC4Prompt', () => {
       expect(result).to.include('Rel()');
     });
 
-    it('should include file system instructions', () => {
+    it('should include tool instructions', () => {
       const args = {
         rootDirectory: '/test/path',
         c4Type: 'C4Context'
@@ -108,9 +109,9 @@ describe('GenerateRollupC4Prompt', () => {
       
       const result = generateRollupC4Prompt.expandPrompt(args);
       
-      expect(result).to.include('Use the filesystem tool');
+      expect(result).to.include('Use the ' + C4DiagrammerName + ' tool');
       expect(result).to.include('recursively search');
-      expect(result).to.include('README.McpDoc.md');
+      expect(result).to.include('README.' + C4DiagrammerName + '.md');
     });
 
     it('should include validation instructions', () => {

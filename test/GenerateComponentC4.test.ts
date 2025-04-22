@@ -7,6 +7,8 @@
 
 import { expect } from 'chai';
 import { generateComponentC4Prompt } from '../src/GenerateComponentC4Prompt.js';
+import { C4DiagrammerName } from '../src/UIStrings.js';
+
 
 describe('GenerateComponentC4Prompt', () => {
   describe('validateGenerateComponentC4DiagramArgs', () => {
@@ -53,8 +55,8 @@ describe('GenerateComponentC4Prompt', () => {
       
       expect(result).to.be.a('string');
       expect(result).to.include('/test/path');
-      expect(result).to.include('Use the filesystem tool');
-      expect(result).to.include('C4Component.McpDoc.md');
+      expect(result).to.include('Use the ' + C4DiagrammerName + ' tool');
+      expect(result).to.include('C4Component.' + C4DiagrammerName + '.md');
     });
 
     it('should include all required C4 diagram instructions', () => {

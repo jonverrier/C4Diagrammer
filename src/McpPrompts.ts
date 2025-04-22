@@ -40,9 +40,9 @@ import {
  * Adds prompt handlers to the MCP server for generating documentation.
  * 
  * This function sets up handlers for three types of documentation generation:
- * 1. README.McpDoc.md - Module-level documentation summarizing code in each directory
- * 2. C4Component.McpDoc.md - Component-level C4 architecture diagrams for each module
- * 3. C4Context.McpDoc.md or C4Container.McpDoc.md - System-level C4 architecture diagrams
+ * 1. README.' + C4DiagrammerName + '.md - Module-level documentation summarizing code in each directory
+ * 2. C4Component.' + C4DiagrammerName + '.md - Component-level C4 architecture diagrams for each module
+ * 3. C4Context.' + C4DiagrammerName + '.md or C4Container.' + C4DiagrammerName + '.md - System-level C4 architecture diagrams
  * 
  * @param server - The MCP server instance to add handlers to
  * @throws {McpError} If invalid parameters are provided to the prompts

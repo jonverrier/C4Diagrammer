@@ -12,7 +12,7 @@ import * as path from 'path';
 
 import { throwMcpInvalidArgs } from "./McpThrow.js";
 import { IFunction, IArgs, FnValidateArgs, FnExecuteFunction } from './McpBridgeTypes.js';
-import { shouldRegenerateReadmeFunctionDesc, shouldRegenerateReadmeFunctionName } from "./UIStrings.js";
+import { C4DiagrammerName, shouldRegenerateReadmeFunctionDesc, shouldRegenerateReadmeFunctionName } from "./UIStrings.js";
 
 export interface IShouldRegenerateReadMeArgs extends IArgs {
    directory: string | undefined;
@@ -51,7 +51,7 @@ function validateShouldRegenerateReadmeArgs(args: IShouldRegenerateReadMeArgs): 
  * Executes the shouldRegenerateReadmeFunction.
  * 
  * @param args - a directory and an array of source file extensions
- * @returns True if any source files have been modified since the README.McpDoc.md file was last updated, otherwise False
+ * @returns True if any source files have been modified since the README.' + C4DiagrammerName + '.md file was last updated, otherwise False
  */
 async function executeShouldRegenerateReadmeFunction(args: IValidatedShouldRegenerateReadMeArgs): Promise<string> {
 
@@ -62,7 +62,7 @@ export function shouldRegenerateReadMe (args: IShouldRegenerateReadMeArgs): stri
 
    const { directory } = args as { directory: string };
 
-   const readmePath = path.join(directory, 'README.McpDoc.md');
+   const readmePath = path.join(directory, 'README.' + C4DiagrammerName + '.md');
 
    try {
       const stats = fs.statSync(readmePath);
@@ -83,8 +83,8 @@ export function shouldRegenerateReadMe (args: IShouldRegenerateReadMeArgs): stri
       return hasNewerFile ? 'True' : 'False';
       
    } catch (error) {
-      // Return False if file doesn't exist
-      return 'False';
+      // Return True if file doesn't exist - we should regenerate it
+      return 'True';
    }   
 }
 

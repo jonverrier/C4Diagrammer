@@ -10,7 +10,7 @@
 import { throwMcpInvalidArgs } from "./McpThrow.js";
 import { isValidC4DiagramType } from "./MermaidTypes.js";
 import { IPrompt, IArgs, FnValidateArgs, FnExpandPrompt } from './McpBridgeTypes.js';
-import { generateRollupC4DiagramPromptName, generateRollupC4DiagramPromptDesc } from "./UIStrings.js";
+import { C4DiagrammerName, generateRollupC4DiagramPromptName, generateRollupC4DiagramPromptDesc } from "./UIStrings.js";
 
 export interface IGenerateRollupC4DiagramArgs extends IArgs {
    rootDirectory: string | undefined;
@@ -43,21 +43,21 @@ function validateGenerateRollupC4DiagramArgs(args: IGenerateRollupC4DiagramArgs)
 }
 
 /**
- * Generates a prompt to create/update C4Context.McpDoc.md or C4Container.McpDoc.md files containing Mermaid.js C4 diagrams.
- * The prompt instructs to analyze all README.McpDoc.md files across subdirectories and generate a single high-level
+ * Generates a prompt to create/update C4Context.' + C4DiagrammerName + '.md or C4Container.' + C4DiagrammerName + '.md files containing Mermaid.js C4 diagrams.
+ * The prompt instructs to analyze all README.' + C4DiagrammerName + '.md files across subdirectories and generate a single high-level
  * C4 diagram (either Context or Container level) following Mermaid.js syntax and C4 model conventions.
  * 
  * @param args - Object containing rootDirectory and c4Type parameters
- * @returns A prompt string that will generate a C4Context.McpDoc.md or C4Container.McpDoc.md file with valid Mermaid.js C4 diagram
+ * @returns A prompt string that will generate a C4Context.' + C4DiagrammerName + '.md or C4Container.' + C4DiagrammerName + '.md file with valid Mermaid.js C4 diagram
  */
 function expandGenerateRollupC4DiagramPrompt(args: IGenerateRollupC4DiagramArgs): string {
 
    const { rootDirectory, c4Type } = args;
 
-   const prompt = `Use the filesystem tool to list all subdirectories of ${rootDirectory}. Ignore the 'node_modules' subdirectory. Then ` +
-                        `recursively search each other subdirectory for a file named 'README.McpDoc.md'. Concatenate the contents of all these ` +
+   const prompt = `Use the ${C4DiagrammerName} tool to list all subdirectories of ${rootDirectory}. Ignore the 'node_modules' subdirectory. Then ` +
+                        `recursively search each other subdirectory for a file named 'README.${C4DiagrammerName}.md'. Concatenate the contents of all these ` +
                         `files, and generate a ${c4Type} Mermaid.js diagram from the contexts. Use the provided tools to parse and validate the ` +
-                        `generated diagram, and if it is valid, generate a preview, and write the markdown to a file named ${c4Type}.McpDoc.md ` +
+                        `generated diagram, and if it is valid, generate a preview, and write the markdown to a file named ${c4Type}.${C4DiagrammerName}.md ` +
                         `in the directory ${rootDirectory}.` + 
                         'Your chain of thought:\n' +
                         `1) Use ${c4Type} for the diagram type (avoid 'C4_Component', PlantUML syntax, or any unrecognized element).\n` +

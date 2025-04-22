@@ -6,15 +6,16 @@
 
 import { expect } from 'chai';
 import { detectMermaidDiagramType, parseMermaid, parseMermaidInBrowser, noErrors } from '../src/ParseMermaid.js';
+import { C4DiagrammerName } from '../src/UIStrings.js';
 
-const mermaidTimeout = 10000; // First load of mermaid seems to take a lot of time & cuases random timeouts
+const mermaidTimeout = 20000; // First load of mermaid seems to take a lot of time & cuases random timeouts
 
 let diagramWithSyntaxError = `C4Component
-    title Component diagram for McpDoc Test Suite
+    title Component diagram for ${C4DiagrammerName} Test Suite
     
     Person(tester, "Test Developer", "Maintains test suite")
     
-    System_Boundary(test_suite, "McpDoc Test Suite") {
+    System_Boundary(test_suite, "${C4DiagrammerName} Test Suite") {
         Component(generator_tests, "Generator Tests", "Tests for README and C4 diagram generation")
         Component(mermaid_tests, "Mermaid Tests", "Tests for diagram parsing and preview")
         Component(util_tests, "Utility Tests", "Tests for regeneration logic")
@@ -30,11 +31,11 @@ let diagramWithSyntaxError = `C4Component
     Rel(mermaid_tests, mermaidjs, "Tests", "Diagram functionality")`;
 
 let diagramWithNoError = `C4Component
-    title Component diagram for McpDoc Test Suite
+    title Component diagram for ${C4DiagrammerName} Test Suite
     
     Person(tester, "Test Developer", "Maintains test suite")
     
-    System_Boundary(test_suite, "McpDoc Test Suite") {
+    System_Boundary(test_suite, "${C4DiagrammerName} Test Suite") {
         Component(generator_tests, "Generator Tests", "Tests for README and C4 diagram generation")
         Component(mermaid_tests, "Mermaid Tests", "Tests for diagram parsing and preview")
         Component(util_tests, "Utility Tests", "Tests for regeneration logic")

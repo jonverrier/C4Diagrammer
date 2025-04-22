@@ -1,5 +1,5 @@
 /**
- * Tests for the ShouldRegenerateReadMe function which determines if README.McpDoc.md 
+ * Tests for the ShouldRegenerateReadMe function which determines if README.' + C4DiagrammerName + '.md 
  * needs to be regenerated based on source file modification timestamps.
  * 
  * Tests validate:
@@ -14,7 +14,7 @@ import { expect } from 'chai';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-
+import { C4DiagrammerName } from '../src/UIStrings.js';
 import { shouldRegenerateReadMeFunction, shouldRegenerateReadMe } from '../src/ShouldRegenerateReadMeFunction.js';
 
 describe('ShouldRegenerateReadMeFunction', () => {
@@ -73,7 +73,7 @@ describe('ShouldRegenerateReadMeFunction', () => {
    describe('executeShouldRegenerateReadmeFunction', () => {
 
       const testDir = path.join(os.tmpdir(), 'mcp-test');
-      const readmePath = path.join(testDir, 'README.McpDoc.md');
+      const readmePath = path.join(testDir, 'README.' + C4DiagrammerName + '.md');
       const tsPath = path.join(testDir, 'test.ts');
       const jsPath = path.join(testDir, 'test.js');
       const txtPath = path.join(testDir, 'other.txt');
@@ -126,7 +126,7 @@ describe('ShouldRegenerateReadMeFunction', () => {
          expect(result).to.equal('False');
       });
 
-      it('should return "False" when README does not exist', () => {
+      it('should return "True" when README does not exist', () => {
 
          const invalidDir = path.join(os.tmpdir(), 'invalid-test');
 
@@ -135,7 +135,7 @@ describe('ShouldRegenerateReadMeFunction', () => {
             sourceFileExtensions: ['.ts']
          });
 
-         expect(result).to.equal('False');
+         expect(result).to.equal('True');
       });
 
       it('should handle multiple file extensions', () => {

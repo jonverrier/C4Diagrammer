@@ -7,6 +7,7 @@
 
 import { expect } from 'chai';
 import { generateReadmePrompt } from '../src/GenerateReadMePrompt.js';
+import { C4DiagrammerName } from '../src/UIStrings.js';
 
 describe('GenerateReadMePrompt', () => {
   describe('validateGenerateReadmeArgs', () => {
@@ -78,12 +79,12 @@ describe('GenerateReadMePrompt', () => {
       };
       
       const result = generateReadmePrompt.expandPrompt(args);
-      
+
       expect(result).to.be.a('string');
       expect(result).to.include('/test/path');
       expect(result).to.include('typescript');
       expect(result).to.include('100 word');
-      expect(result).to.include('README.McpDoc.md');
+      expect(result).to.include('README.' + C4DiagrammerName + '.md');
     });
 
     it('should generate prompt with correct file system instructions', () => {
@@ -95,8 +96,8 @@ describe('GenerateReadMePrompt', () => {
       
       const result = generateReadmePrompt.expandPrompt(args);
       
-      expect(result).to.include('Use the filesystem tool');
-      expect(result).to.include('README.McpDoc.md');
+      expect(result).to.include('Use the ' + C4DiagrammerName + ' tool');
+      expect(result).to.include('README.' + C4DiagrammerName + '.md');
     });
 
     it('should mention all key operations in the prompt', () => {
