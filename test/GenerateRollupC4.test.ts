@@ -6,10 +6,18 @@
  */
 
 import { expect } from 'chai';
-import { generateRollupC4Prompt } from '../src/GenerateRollupC4Prompt.js';
+import path from 'path';
+
 import { C4DiagrammerName } from '../src/UIStrings.js';
+import { PromptFileRepository, throwIfUndefined } from 'prompt-repository';
+import { generateRollupC4DiagramPromptId } from '../src/PromptIds.js';
 
 describe('GenerateRollupC4Prompt', () => {
+
+   const repository = new PromptFileRepository(path.join(process.cwd(), 'src/Prompts.json'));
+   const rollupC4Prompt = repository.getPrompt(generateRollupC4DiagramPromptId);
+   throwIfUndefined (rollupC4Prompt);
+
   describe('validateGenerateRollupC4DiagramArgs', () => {
     it('should validate correct arguments', () => {
       const args = {
@@ -17,8 +25,9 @@ describe('GenerateRollupC4Prompt', () => {
         c4Type: 'C4Context'
       };
       
-      const result = generateRollupC4Prompt.validateArgs(args);
-      expect(result).to.deep.equal(args);
+      const result = repository.expandUserPrompt(rollupC4Prompt, args);
+      expect(result).to.contain(args.rootDirectory);
+      expect(result).to.contain(args.c4Type);
     });
 
     it('should throw error when rootDirectory is undefined', () => {
@@ -27,7 +36,7 @@ describe('GenerateRollupC4Prompt', () => {
         c4Type: 'C4Context'
       };
       
-      expect(() => generateRollupC4Prompt.validateArgs(args))
+      expect(() => repository.expandUserPrompt(rollupC4Prompt, args))
         .to.throw();
     });
 
@@ -37,22 +46,22 @@ describe('GenerateRollupC4Prompt', () => {
         c4Type: undefined
       };
       
-      expect(() => generateRollupC4Prompt.validateArgs(args))
+      expect(() => repository.expandUserPrompt(rollupC4Prompt, args))
         .to.throw();
     });
 
     it('should throw error when c4Type is invalid', () => {
       const args = {
         rootDirectory: '/test/path',
-        c4Type: 'InvalidType'
+        c4Type:  1 as any
       };
       
-      expect(() => generateRollupC4Prompt.validateArgs(args))
+      expect(() => repository.expandUserPrompt(rollupC4Prompt, args))
         .to.throw();
     });
 
     it('should throw error when args is null', () => {
-      expect(() => generateRollupC4Prompt.validateArgs(null as any))
+      expect(() => repository.expandUserPrompt(rollupC4Prompt, null as any))
         .to.throw();
     });
   });
@@ -64,7 +73,7 @@ describe('GenerateRollupC4Prompt', () => {
         c4Type: 'C4Context'
       };
       
-      const result = generateRollupC4Prompt.expandPrompt(args);
+      const result = repository.expandUserPrompt(rollupC4Prompt, args);
       
       expect(result).to.be.a('string');
       expect(result).to.include('/test/path');
@@ -79,7 +88,7 @@ describe('GenerateRollupC4Prompt', () => {
         c4Type: 'C4Container'
       };
       
-      const result = generateRollupC4Prompt.expandPrompt(args);
+      const result = repository.expandUserPrompt(rollupC4Prompt, args);
       
       expect(result).to.include('C4Container');
       expect(result).to.include('C4Container.' + C4DiagrammerName + '.md');
@@ -91,7 +100,7 @@ describe('GenerateRollupC4Prompt', () => {
         c4Type: 'C4Context'
       };
       
-      const result = generateRollupC4Prompt.expandPrompt(args);
+      const result = repository.expandUserPrompt(rollupC4Prompt, args);
       
       expect(result).to.include('Person()');
       expect(result).to.include('Container()');
@@ -107,7 +116,7 @@ describe('GenerateRollupC4Prompt', () => {
         c4Type: 'C4Context'
       };
       
-      const result = generateRollupC4Prompt.expandPrompt(args);
+      const result = repository.expandUserPrompt(rollupC4Prompt, args);
       
       expect(result).to.include('Use the ' + C4DiagrammerName + ' tool');
       expect(result).to.include('recursively search');
@@ -120,7 +129,7 @@ describe('GenerateRollupC4Prompt', () => {
         c4Type: 'C4Context'
       };
       
-      const result = generateRollupC4Prompt.expandPrompt(args);
+      const result = repository.expandUserPrompt(rollupC4Prompt, args);
       
       expect(result).to.include('parse and validate');
       expect(result).to.include('valid Mermaid code');
@@ -129,10 +138,9 @@ describe('GenerateRollupC4Prompt', () => {
 
   describe('generateRollupC4Prompt object', () => {
     it('should have all required properties', () => {
-      expect(generateRollupC4Prompt).to.have.property('name');
-      expect(generateRollupC4Prompt).to.have.property('description');
-      expect(generateRollupC4Prompt).to.have.property('validateArgs');
-      expect(generateRollupC4Prompt).to.have.property('expandPrompt');
+      expect(rollupC4Prompt).to.have.property('name');
+      expect(rollupC4Prompt).to.have.property('description');
+      expect(rollupC4Prompt).to.have.property('userPromptParameters');
     });
   });
 });

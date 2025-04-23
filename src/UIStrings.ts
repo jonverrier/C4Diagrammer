@@ -8,12 +8,6 @@ export const C4DiagrammerName = 'C4Diagrammer';
 
 // Strings used in Prompt definitions 
 
-export const generateRollupC4DiagramPromptName = 'generate_rollup_c4_diagram';
-export const generateRollupC4DiagramPromptDesc = 'Generate a C4 diagram of the specific type from the context provided';
-
-export const rootDirectoryParamName = 'RootDirectory';
-export const rootDirectoryParamDesc = 'The root directory to use to scan for source files in subdirectories and write documentation.';
-
 export const c4TypeParamName = 'C4Type';
 export const c4TypeParamDesc = 'The type of C4 diagram to generate. C4Context, C4Container, C4Component, or C4Deployment';
 

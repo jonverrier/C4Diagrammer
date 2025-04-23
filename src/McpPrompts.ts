@@ -6,34 +6,37 @@
  */
 import path from 'path';
 import { fileURLToPath } from 'url';
- 
+
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import {
    GetPromptRequestSchema,
    ListPromptsRequestSchema,
    ListPromptsResult,
    GetPromptRequest,
-   GetPromptResult
+   GetPromptResult,
 } from '@modelcontextprotocol/sdk/types.js';
 
 import { IPromptRepository, PromptFileRepository } from 'prompt-repository';
 
 import { throwMcpMethodNotFound } from "./McpThrow.js";
-import { generateRollupC4Prompt } from "./GenerateRollupC4Prompt.js";
 import { getMcpPrompt, expandPrompt } from "./McpBridgeTypes.js";
-import { generateComponentC4DiagramPromptId, generateReadmePromptId } from "./PromptIds.js";
-
-import {
-   rootDirectoryParamName,
-   c4TypeParamName,
-   rootDirectoryParamDesc,
-   c4TypeParamDesc,
-   generateRollupC4DiagramPromptName,
-   generateRollupC4DiagramPromptDesc
-} from './UIStrings.js';
+import { generateComponentC4DiagramPromptId, 
+   generateReadmePromptId, 
+   generateRollupC4DiagramPromptId } from "./PromptIds.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+function createPromptMessages(prompt: string): GetPromptResult {
+   return {
+      messages: [
+         {
+            role: 'user',
+            content: { type: 'text', text: prompt }
+         }
+      ]
+   };
+}
 
 let repository: IPromptRepository = new PromptFileRepository(path.join(__dirname, './Prompts.json'));
 /**
@@ -59,28 +62,18 @@ export function addPrompts(server: Server): void {
       throw new Error('Component C4 prompt not found');
    }
 
+   const rollupC4Prompt = getMcpPrompt(generateRollupC4DiagramPromptId, repository);
+   if (!rollupC4Prompt) {
+      throw new Error('Rollup C4 prompt not found');
+   }
+
    // Prompts
    server.setRequestHandler(ListPromptsRequestSchema, async (): Promise<ListPromptsResult> => {
       return Promise.resolve({
          prompts: [
             readmePrompt,
             componentC4Prompt,
-            {
-               name: generateRollupC4DiagramPromptName,
-               description: generateRollupC4DiagramPromptDesc,
-               arguments: [
-                  {
-                     name: rootDirectoryParamName,
-                     description: rootDirectoryParamDesc,
-                     required: true
-                  },
-                  {
-                     name: c4TypeParamName,
-                     description: c4TypeParamDesc,
-                     required: true
-                  }
-               ]
-            }
+            rollupC4Prompt
          ]
       });
    });
@@ -97,17 +90,7 @@ export function addPrompts(server: Server): void {
             wordCount: args?.wordCount ?? undefined
          });
 
-         return {
-            messages: [
-               {
-                  role: 'user',
-                  content: {
-                     type: 'text',
-                     text: expandedPrompt
-                  },
-               },
-            ],
-         }
+         return createPromptMessages(expandedPrompt);
       }
       else
       if (request.params.name === componentC4Prompt.name) {
@@ -118,39 +101,19 @@ export function addPrompts(server: Server): void {
             rootDirectory: args?.rootDirectory
          });
 
-         return {
-            messages: [
-               {
-                  role: 'user',
-                  content: {
-                     type: 'text',
-                     text: expandedPrompt
-                  },
-               },
-            ],
-         }
+         return createPromptMessages(expandedPrompt);
       }
       else
-      if (request.params.name === generateRollupC4DiagramPromptName) {
+      if (request.params.name === rollupC4Prompt.name) {
 
          const args = request.params.arguments;
 
-         const validatedArgs = generateRollupC4Prompt.validateArgs({
-            rootDirectory: args?.RootDirectory,
-            c4Type: args?.C4Type
+         const expandedPrompt = expandPrompt(generateRollupC4DiagramPromptId, repository, {
+            rootDirectory: args?.rootDirectory,
+            c4Type: args?.c4Type
          });
 
-         return {
-            messages: [
-               {
-                  role: 'user',
-                  content: {
-                     type: 'text',
-                     text: generateRollupC4Prompt.expandPrompt(validatedArgs)
-                  },
-               }
-            ],
-         }
+         return createPromptMessages(expandedPrompt);
       }
 
       throwMcpMethodNotFound('Prompt not found');
