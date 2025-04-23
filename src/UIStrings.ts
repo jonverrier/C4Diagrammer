@@ -8,9 +8,6 @@ export const C4DiagrammerName = 'C4Diagrammer';
 
 // Strings used in Prompt definitions 
 
-export const generateComponentC4DiagramPromptName = 'generate_component_c4_diagrams';
-export const generateComponentC4DiagramPromptDesc = 'Generate a C4Component.C4Diagrammer.md file for each subdirectory that contains source code.';
-
 export const generateRollupC4DiagramPromptName = 'generate_rollup_c4_diagram';
 export const generateRollupC4DiagramPromptDesc = 'Generate a C4 diagram of the specific type from the context provided';
 

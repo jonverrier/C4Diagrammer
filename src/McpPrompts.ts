@@ -4,6 +4,8 @@
  * 
  * Copyright Jon Verrier, 2025
  */
+import path from 'path';
+import { fileURLToPath } from 'url';
  
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import {
@@ -17,23 +19,18 @@ import {
 import { IPromptRepository, PromptFileRepository } from 'prompt-repository';
 
 import { throwMcpMethodNotFound } from "./McpThrow.js";
-import { generateComponentC4Prompt } from "./GenerateComponentC4Prompt.js";
 import { generateRollupC4Prompt } from "./GenerateRollupC4Prompt.js";
 import { getMcpPrompt, expandPrompt } from "./McpBridgeTypes.js";
-import { generateReadmePromptId } from "./PromptIds.js";
+import { generateComponentC4DiagramPromptId, generateReadmePromptId } from "./PromptIds.js";
 
 import {
    rootDirectoryParamName,
    c4TypeParamName,
    rootDirectoryParamDesc,
    c4TypeParamDesc,
-   generateComponentC4DiagramPromptName,
    generateRollupC4DiagramPromptName,
-   generateComponentC4DiagramPromptDesc,
    generateRollupC4DiagramPromptDesc
 } from './UIStrings.js';
-import path from 'path';
-import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -56,22 +53,18 @@ export function addPrompts(server: Server): void {
    if (!readmePrompt) {
       throw new Error('Readme prompt not found');
    }
+
+   const componentC4Prompt = getMcpPrompt(generateComponentC4DiagramPromptId, repository);
+   if (!componentC4Prompt) {
+      throw new Error('Component C4 prompt not found');
+   }
+
    // Prompts
    server.setRequestHandler(ListPromptsRequestSchema, async (): Promise<ListPromptsResult> => {
       return Promise.resolve({
          prompts: [
             readmePrompt,
-            {
-               name: generateComponentC4DiagramPromptName,
-               description: generateComponentC4DiagramPromptDesc,
-               arguments: [
-                  {
-                     name: rootDirectoryParamName,
-                     description: rootDirectoryParamDesc,
-                     required: true,
-                  }
-               ]
-            },
+            componentC4Prompt,
             {
                name: generateRollupC4DiagramPromptName,
                description: generateRollupC4DiagramPromptDesc,
@@ -93,8 +86,6 @@ export function addPrompts(server: Server): void {
    });
 
    server.setRequestHandler(GetPromptRequestSchema, async (request: GetPromptRequest): Promise<GetPromptResult> => {
-
-      const readmePrompt = getMcpPrompt(generateReadmePromptId, repository);
 
       if (request.params.name === readmePrompt?.name) {
 
@@ -119,12 +110,12 @@ export function addPrompts(server: Server): void {
          }
       }
       else
-      if (request.params.name === generateComponentC4DiagramPromptName) {
+      if (request.params.name === componentC4Prompt.name) {
 
          const args = request.params.arguments;
 
-         const validatedArgs = generateComponentC4Prompt.validateArgs({
-            rootDirectory: args?.RootDirectory
+         const expandedPrompt = expandPrompt(generateComponentC4DiagramPromptId, repository, {
+            rootDirectory: args?.rootDirectory
          });
 
          return {
@@ -133,7 +124,7 @@ export function addPrompts(server: Server): void {
                   role: 'user',
                   content: {
                      type: 'text',
-                     text: generateComponentC4Prompt.expandPrompt(validatedArgs)
+                     text: expandedPrompt
                   },
                },
             ],

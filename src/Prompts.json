@@ -28,5 +28,21 @@
             "type": "kNumber"
          }
       ]
-   }
+   },
+   {
+      "id": "c2e3d50f-947b-4ae9-8d15-493a67c8901e",
+      "name": "generate_component_c4_diagrams",
+      "description": "Generate a C4Component.C4Diagrammer.md file for each subdirectory that contains source code.",
+      "version": "1.0",
+      "systemPrompt": "You are a senior software developer, and summarise concepts succinctly for more junior developers to understand.",
+      "userPrompt": "Use the C4Diagrammer tool to list all subdirectories of {rootDirectory}. Ignore the 'node_modules' subdirectory. Then recursively seach each other subdirectory. If the subdirectory contains a file 'README.C4Diagrammer.md', then read the contents of the file, and generate a C4Component Mermaid.js diagram from the contents. Use the provided tools to parse and validate the generated diagram, and if it is valid, generate a preview, and write the markdown to a file named C4Component.C4Diagrammer.md in the same subdirectory, giving an absolute path to the tool.\nYour chain of thought:\n1) Use 'C4Component' for the diagram type (avoid 'C4_Component', PlantUML syntax, or any unrecognized element).\n2) Identify the primary user(s) and the main system element(s).\n3) If you see any non-standard C4 elements, convert them to valid Mermaid C4 elements like 'Person()', 'Container()', or 'System()'.\n4) Group related nodes in 'System_Boundary()' blocks if appropriate.\n5) Use 'System_Ext()' for external systems or services.\n6) Only create relationships ('Rel()') between valid elements — refer to components by ID (not just strings). Only use 'Rel', not 'Rel_Neighbor'. Link to nodes directly, not to 'System_Boundary()' blocks.\n7) Output only valid Mermaid code — no extra commentary or text —  which supports built-in rendering in markdown environments.\n8) Verify there are no lexical or syntax errors. If the markdown is not valid mermaid.js, try to diagnose the error using the parse tool and try again.",
+      "userPromptParameters": [
+         {
+            "name": "rootDirectory",
+            "description": "The root directory to use to scan for source files in subdirectories and write documentation.",
+            "required": true,
+            "type": "kString"
+         }
+      ]
+   }   
 ]

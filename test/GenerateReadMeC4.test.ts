@@ -8,15 +8,13 @@
 import { expect } from 'chai';
 import path from 'path';
 import { C4DiagrammerName } from '../src/UIStrings.js';
-import { IPrompt, PromptFileRepository, throwIfUndefined } from 'prompt-repository';
+import { PromptFileRepository, throwIfUndefined } from 'prompt-repository';
 import { generateReadmePromptId } from '../src/PromptIds.js';
-import { read } from 'fs';
 
 describe('GenerateReadMePrompt', () => {
 
   const repository = new PromptFileRepository(path.join(process.cwd(), 'src/Prompts.json'));
   const readmePrompt = repository.getPrompt(generateReadmePromptId);
-
   throwIfUndefined (readmePrompt);
 
   describe('validateGenerateReadmeArgs', () => {

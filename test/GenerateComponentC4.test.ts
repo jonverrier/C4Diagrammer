@@ -6,19 +6,25 @@
  */
 
 import { expect } from 'chai';
-import { generateComponentC4Prompt } from '../src/GenerateComponentC4Prompt.js';
+import path from 'path';
 import { C4DiagrammerName } from '../src/UIStrings.js';
-
+import { generateComponentC4DiagramPromptId } from '../src/PromptIds.js';
+import { PromptFileRepository, throwIfUndefined } from 'prompt-repository';
 
 describe('GenerateComponentC4Prompt', () => {
+
+   const repository = new PromptFileRepository(path.join(process.cwd(), 'src/Prompts.json'));
+   const componentC4Prompt = repository.getPrompt(generateComponentC4DiagramPromptId);
+   throwIfUndefined (componentC4Prompt);
+
   describe('validateGenerateComponentC4DiagramArgs', () => {
     it('should validate correct arguments', () => {
       const args = {
         rootDirectory: '/test/path'
       };
       
-      const result = generateComponentC4Prompt.validateArgs(args);
-      expect(result).to.deep.equal(args);
+      const result = repository.expandUserPrompt(componentC4Prompt, args);
+      expect(result).to.contain(args.rootDirectory);
     });
 
     it('should throw error when rootDirectory is undefined', () => {
@@ -26,7 +32,7 @@ describe('GenerateComponentC4Prompt', () => {
         rootDirectory: undefined
       };
       
-      expect(() => generateComponentC4Prompt.validateArgs(args))
+      expect(() => repository.expandUserPrompt(componentC4Prompt, args))
         .to.throw();
     });
 
@@ -35,12 +41,12 @@ describe('GenerateComponentC4Prompt', () => {
         rootDirectory: 123 as any
       };
       
-      expect(() => generateComponentC4Prompt.validateArgs(args))
+      expect(() => repository.expandUserPrompt(componentC4Prompt, args))
       .to.throw();
     });
 
     it('should throw error when args is null', () => {
-      expect(() => generateComponentC4Prompt.validateArgs(null as any))
+      expect(() => repository.expandUserPrompt(componentC4Prompt, null as any))
       .to.throw();
     });
   });
@@ -51,7 +57,7 @@ describe('GenerateComponentC4Prompt', () => {
         rootDirectory: '/test/path'
       };
       
-      const result = generateComponentC4Prompt.expandPrompt(args);
+      const result = repository.expandUserPrompt(componentC4Prompt, args);
       
       expect(result).to.be.a('string');
       expect(result).to.include('/test/path');
@@ -64,7 +70,7 @@ describe('GenerateComponentC4Prompt', () => {
         rootDirectory: '/test/path'
       };
       
-      const result = generateComponentC4Prompt.expandPrompt(args);
+      const result = repository.expandUserPrompt(componentC4Prompt, args);
       
       expect(result).to.include('C4Component');
       expect(result).to.include('Person()');
@@ -81,7 +87,7 @@ describe('GenerateComponentC4Prompt', () => {
         c4Type: 'C4Context'
       };
       
-      const result = generateComponentC4Prompt.expandPrompt(args);
+      const result = repository.expandUserPrompt(componentC4Prompt, args);
       
       expect(result).to.include('parse and validate');
       expect(result).to.include('valid Mermaid code');
@@ -90,10 +96,9 @@ describe('GenerateComponentC4Prompt', () => {
 
   describe('generateComponentC4Prompt object', () => {
     it('should have all required properties', () => {
-      expect(generateComponentC4Prompt).to.have.property('name');
-      expect(generateComponentC4Prompt).to.have.property('description');
-      expect(generateComponentC4Prompt).to.have.property('validateArgs');
-      expect(generateComponentC4Prompt).to.have.property('expandPrompt');
+      expect(componentC4Prompt).to.have.property('name');
+      expect(componentC4Prompt).to.have.property('description');
+      expect(componentC4Prompt).to.have.property('userPromptParameters');
     });
   });
 });
