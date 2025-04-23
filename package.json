@@ -1,11 +1,11 @@
 {
-  "name": "mcp-documenter",
+  "name": "c4-diagrammer",
   "version": "0.1.0",
-  "description": "A Model Context Protocol server that generates documentation for source code",
+  "description": "A Model Context Protocol server that generates C4 diagrams for source code",
   "private": true,
   "type": "module",
   "bin": {
-    "mcp_documenter": "./dist/src/index.js"
+    "c4_diagrammer": "./dist/src/index.js"
   },
   "files": [
     "dist"
@@ -21,7 +21,7 @@
     "watch": "tsc --watch",
     "clean": "rimraf dist",
     "inspector": "npx @modelcontextprotocol/inspector dist/src/index.js",
-    "mcp-documenter": "node dist/src/index.js"
+    "c4-diagrammer": "node dist/src/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "0.6.0",
