@@ -1,0 +1,32 @@
+[
+   {
+      "id": "98a5d40d-885a-4ca8-9326-286948e4755d",
+      "name": "generate_readme_files",
+      "description": "Generate a README.C4Diagrammer.md file for each subdirectory that contains source code.",
+      "version": "1.0",
+      "systemPrompt": "You are a senior software developer, and summarise concepts succinctly for more junior developers to understand.",
+      "userPrompt": "Use the C4Diagrammer tool to list all subdirectories of {rootDirectory}. Ignore any 'node_modules' subdirectories. Then recursively list the contents of each other subdirectory (apart from any 'node_modules' subdirectories) for {languages} files. If the subdirectory contains one or more {languages} files, call the C4Diagrammer tool \"should_regenerate_readme\" to see if the README file should be regenerated. If the README file should be regenerated, then read every {languages} file in the subdirectory, and create a {wordCount} word summary of the file in markdown format intended to brief new developers on its content. Accumulate all the summaries and write a concatenated summary into a file named README.C4Diagrammer.md in the same subdirectory, giving an absolute path to the tool.",
+      "userPromptParameters": [
+         {
+            "name": "rootDirectory",
+            "description": "The root directory to use to scan for source files in subdirectories and write documentation.",
+            "required": true,
+            "type": "kString"
+         },
+         {
+            "name": "languages",
+            "description": "The language(s) to direct the model to view as source code. The default is Typescript. Other languages can be specified, if you want multiple languages then use a comma separated list.",
+            "required": false,
+            "defaultValue": "Typescript",
+            "type": "kString"
+         },
+         {
+            "name": "wordCount",
+            "description": "The number of words to use to summarise each code module. The default is 50.",
+            "required": false,
+            "defaultValue": "50",
+            "type": "kNumber"
+         }
+      ]
+   }
+]

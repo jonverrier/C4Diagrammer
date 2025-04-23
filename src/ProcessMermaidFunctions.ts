@@ -14,7 +14,7 @@
 import fs from 'fs';
 
 import { throwMcpInternalError, throwMcpInvalidArgs } from "./McpThrow.js";
-import { IFunction, IArgs, FnValidateArgs, FnExecuteFunction } from './McpBridgeTypes.js';
+import { IMcpFunction, IArgs, FnValidateArgs, FnExecuteFunction } from './McpBridgeTypes.js';
 import { detectMermaidDiagramType, parseMermaidInBrowser } from "./ParseMermaid.js";
 import { detectMermaidDiagramTypeToolName, detectMermaidDiagramTypeToolDesc, 
    parseMermaidToolDesc, parseMermaidToolName, previewMermaidToolName, previewMermaidToolDesc,
@@ -90,7 +90,7 @@ async function executePreviewExistingMermaid(args: IProcessValidatedExistingMerm
 }
 
 // Function to detect the type of a mermaid diagram (C4Context, C4Container, C4Component, or C4Deployment)
-export const detectMermaidFunction: IFunction = {
+export const detectMermaidFunction: IMcpFunction = {
    name: detectMermaidDiagramTypeToolName,
    description: detectMermaidDiagramTypeToolDesc,
    validateArgs: validateMermaidArgs as unknown as FnValidateArgs,
@@ -98,7 +98,7 @@ export const detectMermaidFunction: IFunction = {
 };
 
 // Function to parse a mermaid diagram and return errors if there are syntax errors
-export const parseMermaidFunction: IFunction = {
+export const parseMermaidFunction: IMcpFunction = {
    name: parseMermaidToolName,
    description: parseMermaidToolDesc,
    validateArgs: validateMermaidArgs as unknown as FnValidateArgs,
@@ -106,7 +106,7 @@ export const parseMermaidFunction: IFunction = {
 };
 
 // Function to preview a mermaid diagram in a browser
-export const previewMermaidFunction: IFunction = {
+export const previewMermaidFunction: IMcpFunction = {
    name: previewMermaidToolName,
    description: previewMermaidToolDesc,
    validateArgs: validateMermaidArgs as unknown as FnValidateArgs,
@@ -114,7 +114,7 @@ export const previewMermaidFunction: IFunction = {
 };
 
 // Function to preview a mermaid diagram from a file
-export const previewExistingMermaidFunction: IFunction = {
+export const previewExistingMermaidFunction: IMcpFunction = {
    name: previewExistingMermaidToolName,
    description: previewExistingMermaidToolDesc,
    validateArgs: validateExistingMermaidArgs as unknown as FnValidateArgs,

@@ -6,20 +6,31 @@
  */
 
 import { expect } from 'chai';
-import { generateReadmePrompt } from '../src/GenerateReadMePrompt.js';
+import path from 'path';
 import { C4DiagrammerName } from '../src/UIStrings.js';
+import { IPrompt, PromptFileRepository, throwIfUndefined } from 'prompt-repository';
+import { generateReadmePromptId } from '../src/PromptIds.js';
+import { read } from 'fs';
 
 describe('GenerateReadMePrompt', () => {
+
+  const repository = new PromptFileRepository(path.join(process.cwd(), 'src/Prompts.json'));
+  const readmePrompt = repository.getPrompt(generateReadmePromptId);
+
+  throwIfUndefined (readmePrompt);
+
   describe('validateGenerateReadmeArgs', () => {
     it('should validate correct arguments with all parameters', () => {
       const args = {
         rootDirectory: '/test/path',
-        languages: 'typescript',
-        wordsPerModule: '100'
+        languages: 'typescript2',
+        wordCount: '101'
       };
       
-      const result = generateReadmePrompt.validateArgs(args);
-      expect(result).to.deep.equal(args);
+      const result = repository.expandUserPrompt (readmePrompt, args);
+      expect(result).to.contain(args.rootDirectory);
+      expect(result).to.contain(args.languages);
+      expect(result).to.contain(args.wordCount);
     });
 
     it('should set default values when optional parameters are missing', () => {
@@ -27,12 +38,18 @@ describe('GenerateReadMePrompt', () => {
         rootDirectory: '/test/path'
       };
       
-      const result = generateReadmePrompt.validateArgs(args);
-      expect(result).to.deep.equal({
-        rootDirectory: '/test/path',
-        languages: 'typescript',
-        wordsPerModule: '50'
-      });
+      const result = repository.expandUserPrompt (readmePrompt, args);
+      expect(result).to.contain(args.rootDirectory);
+      expect(result).to.contain("Typescript");
+      expect(result).to.contain("50");
+    });
+
+    it('should throw error when rootDirectory is not present', () => {
+      const args = {
+      };
+      
+      expect(() => repository.expandUserPrompt (readmePrompt, args))
+        .to.throw();
     });
 
     it('should throw error when rootDirectory is undefined', () => {
@@ -40,7 +57,7 @@ describe('GenerateReadMePrompt', () => {
         rootDirectory: undefined
       };
       
-      expect(() => generateReadmePrompt.validateArgs(args))
+      expect(() => repository.expandUserPrompt (readmePrompt, args))
         .to.throw();
     });
 
@@ -50,22 +67,22 @@ describe('GenerateReadMePrompt', () => {
         languages: 123 as any
       };
       
-      expect(() => generateReadmePrompt.validateArgs(args))
+      expect(() => repository.expandUserPrompt (readmePrompt, args))
       .to.throw();
     });
 
-    it('should throw error when wordsPerModule is not a number', () => {
+    it('should throw error when wordCount is not a number', () => {
       const args = {
         rootDirectory: '/test/path',
-        wordsPerModule: 'not-a-number'
+        wordCount: 'not-a-number'
       };
       
-      expect(() => generateReadmePrompt.validateArgs(args))
+      expect(() => repository.expandUserPrompt (readmePrompt, args))
       .to.throw();
     });
 
     it('should throw error when args is null', () => {
-      expect(() => generateReadmePrompt.validateArgs(null as any))
+      expect(() => repository.expandUserPrompt (readmePrompt, null as any))
       .to.throw();
     });
   });
@@ -75,10 +92,10 @@ describe('GenerateReadMePrompt', () => {
       const args = {
         rootDirectory: '/test/path',
         languages: 'typescript',
-        wordsPerModule: '100'
+        wordCount: '100'
       };
       
-      const result = generateReadmePrompt.expandPrompt(args);
+      const result = repository.expandUserPrompt (readmePrompt, args);
 
       expect(result).to.be.a('string');
       expect(result).to.include('/test/path');
@@ -91,10 +108,10 @@ describe('GenerateReadMePrompt', () => {
       const args = {
         rootDirectory: '/test/path',
         languages: 'javascript',
-        wordsPerModule: '75'
+        wordCount: '75'
       };
       
-      const result = generateReadmePrompt.expandPrompt(args);
+      const result = repository.expandUserPrompt (readmePrompt, args);
       
       expect(result).to.include('Use the ' + C4DiagrammerName + ' tool');
       expect(result).to.include('README.' + C4DiagrammerName + '.md');
@@ -104,10 +121,10 @@ describe('GenerateReadMePrompt', () => {
       const args = {
         rootDirectory: '/test/path',
         languages: 'typescript',
-        wordsPerModule: '50'
+        wordCount: '50'
       };
       
-      const result = generateReadmePrompt.expandPrompt(args);
+      const result = repository.expandUserPrompt (readmePrompt, args);
       
       expect(result).to.include('recursively list');
       expect(result).to.include('read every');
@@ -118,10 +135,9 @@ describe('GenerateReadMePrompt', () => {
 
   describe('generateReadmePrompt object', () => {
     it('should have all required properties', () => {
-      expect(generateReadmePrompt).to.have.property('name');
-      expect(generateReadmePrompt).to.have.property('description');
-      expect(generateReadmePrompt).to.have.property('validateArgs');
-      expect(generateReadmePrompt).to.have.property('expandPrompt');
+      expect(readmePrompt).to.have.property('name');
+      expect(readmePrompt).to.have.property('description');
+      expect(readmePrompt).to.have.property('userPromptParameters');
     });
   });
 });

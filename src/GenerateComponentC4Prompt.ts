@@ -7,7 +7,7 @@
  */
 
 import { throwMcpInvalidArgs } from "./McpThrow.js";
-import { IPrompt, IArgs, FnValidateArgs, FnExpandPrompt } from './McpBridgeTypes.js';
+import { IMcpPrompt, IArgs, FnValidateArgs, FnExpandPrompt } from './McpBridgeTypes.js';
 import { C4DiagrammerName, generateComponentC4DiagramPromptDesc, generateComponentC4DiagramPromptName } from "./UIStrings.js";
 
 export interface IGenerateComponentMermaidC4DiagramArgs extends IArgs {
@@ -64,7 +64,7 @@ function expandGenerateComponentC4DiagramPrompt(args: IGenerateComponentMermaidC
 }
 
 
-export let generateComponentC4Prompt : IPrompt = {
+export let generateComponentC4Prompt : IMcpPrompt = {
    name: generateComponentC4DiagramPromptName,
    description: generateComponentC4DiagramPromptDesc,
    validateArgs: validateGenerateComponentC4DiagramArgs as unknown as FnValidateArgs,

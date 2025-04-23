@@ -11,9 +11,10 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && npm run copy-assets",
+    "copy-assets": "copyfiles -u 1 src/**/*.json dist/src/",
     "test": "mocha --require ts-node/register --extensions ts,js test/*.test.ts --exit",
-    "test-mini": "mocha --require ts-node/register --extensions ts,js test/FileFunctions.test.ts --exit",    
+    "test-mini": "mocha --require ts-node/register --extensions ts,js test\\GenerateReadMeC4.test.ts --exit",
     "test2": "mocha --loader=ts-node/esm --require ts-node/register --extensions ts --debug-brk --config D:/Code/McpDoc/.mocharc.json D:/Code/McpDoc/test/**/*.test.ts --exit",
     "start": "node dist/src/index.js",
     "prepare": "npm run build",
@@ -38,6 +39,7 @@
     "chai": "^4.3.0",
     "chai-as-promised": "^7.1.2",
     "cheerio": "^1.0.0",
+    "copyfiles": "^2.4.1",
     "mocha": "^10.0.0",
     "prompt-repository": "file:../PromptRepository",
     "rimraf": "^6.0.1",

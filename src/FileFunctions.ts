@@ -14,7 +14,7 @@ import path from "path";
 import os from 'os';
 
 import { throwMcpInternalError, throwMcpInvalidArgs } from "./McpThrow.js";
-import { IFunction, IArgs, FnValidateArgs, FnExecuteFunction } from './McpBridgeTypes.js';
+import { IMcpFunction, IArgs, FnValidateArgs, FnExecuteFunction } from './McpBridgeTypes.js';
 import { 
    readFileToolName, 
    readFileToolDesc, 
@@ -167,7 +167,7 @@ async function executeReadFile(args: IProcessValidatedReadFileArgs): Promise<str
 }
 
 // Function to read a file and return the content
-export const readFileFunction: IFunction = {
+export const readFileFunction: IMcpFunction = {
    name: readFileToolName,
    description: readFileToolDesc,
    validateArgs: validateReadFileArgs as unknown as FnValidateArgs,
@@ -203,7 +203,7 @@ async function executeWriteFile(args: IProcessValidatedWriteFileArgs): Promise<s
 }
 
 // Function to write content to a file
-export const writeFileFunction: IFunction = {
+export const writeFileFunction: IMcpFunction = {
    name: writeFileToolName,
    description: writeFileToolDesc,
    validateArgs: validateWriteFileArgs as unknown as FnValidateArgs,
@@ -239,7 +239,7 @@ async function executeListDirectory(args: IProcessValidatedListDirectoryArgs): P
 }
 
 // Function to list contents of a directory
-export const listDirectoryFunction: IFunction = {
+export const listDirectoryFunction: IMcpFunction = {
    name: listDirectoryToolName, 
    description: listDirectoryToolDesc,
    validateArgs: validateListDirectoryArgs as unknown as FnValidateArgs,

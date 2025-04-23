@@ -7,8 +7,6 @@
 export const C4DiagrammerName = 'C4Diagrammer';
 
 // Strings used in Prompt definitions 
-export const generateReadmePromptName = 'generate_readme_files';
-export const generateReadmePromptDesc = 'Generate a README.C4Diagrammer.md file for each subdirectory that contains source code.';
 
 export const generateComponentC4DiagramPromptName = 'generate_component_c4_diagrams';
 export const generateComponentC4DiagramPromptDesc = 'Generate a C4Component.C4Diagrammer.md file for each subdirectory that contains source code.';
@@ -18,12 +16,6 @@ export const generateRollupC4DiagramPromptDesc = 'Generate a C4 diagram of the s
 
 export const rootDirectoryParamName = 'RootDirectory';
 export const rootDirectoryParamDesc = 'The root directory to use to scan for source files in subdirectories and write documentation.';
-
-export const languagesParamName = 'Language(s)';
-export const languagesParamDesc = 'The language(s) to direct the model to view as source code. The default is typescript. Other languages can be specified, if you want multiple then use a comma separated list.';
-
-export const wordsPerModuleParamName = 'WordsPerModule';
-export const wordsPerModuleParamDesc = 'The number of words to use to summarise each code module. The default is 50.';
 
 export const c4TypeParamName = 'C4Type';
 export const c4TypeParamDesc = 'The type of C4 diagram to generate. C4Context, C4Container, C4Component, or C4Deployment';

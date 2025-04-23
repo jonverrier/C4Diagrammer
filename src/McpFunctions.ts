@@ -53,7 +53,7 @@ import {
    writeFileToolName
 } from "./UIStrings.js";
 
-import { IFunction } from "./McpBridgeTypes.js";
+import { IMcpFunction } from "./McpBridgeTypes.js";
 
 import {
   detectMermaidFunction,
@@ -307,7 +307,7 @@ export function addFunctions(server: Server): void {
    });
 }
 
-async function processMermaid(args: IProcessMermaidArgs, tool: IFunction): Promise<string> {
+async function processMermaid(args: IProcessMermaidArgs, tool: IMcpFunction): Promise<string> {
 
    const validatedArgs = tool.validateArgs(args);
 
@@ -321,7 +321,7 @@ async function processMermaid(args: IProcessMermaidArgs, tool: IFunction): Promi
    return result;
 }
 
-async function processMermaidFile(args: IProcessExistingMermaidArgs, tool: IFunction): Promise<string> {
+async function processMermaidFile(args: IProcessExistingMermaidArgs, tool: IMcpFunction): Promise<string> {
 
    const validatedArgs = tool.validateArgs(args);
 

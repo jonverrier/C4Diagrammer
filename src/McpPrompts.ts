@@ -14,28 +14,31 @@ import {
    GetPromptResult
 } from '@modelcontextprotocol/sdk/types.js';
 
+import { IPromptRepository, PromptFileRepository } from 'prompt-repository';
+
 import { throwMcpMethodNotFound } from "./McpThrow.js";
-import { generateReadmePrompt } from "./GenerateReadMePrompt.js";
 import { generateComponentC4Prompt } from "./GenerateComponentC4Prompt.js";
 import { generateRollupC4Prompt } from "./GenerateRollupC4Prompt.js";
+import { getMcpPrompt, expandPrompt } from "./McpBridgeTypes.js";
+import { generateReadmePromptId } from "./PromptIds.js";
 
 import {
    rootDirectoryParamName,
-   languagesParamName,
-   wordsPerModuleParamName,
    c4TypeParamName,
    rootDirectoryParamDesc,
-   wordsPerModuleParamDesc,
-   languagesParamDesc,
    c4TypeParamDesc,
-   generateReadmePromptName,
    generateComponentC4DiagramPromptName,
    generateRollupC4DiagramPromptName,
-   generateReadmePromptDesc,
    generateComponentC4DiagramPromptDesc,
    generateRollupC4DiagramPromptDesc
 } from './UIStrings.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+let repository: IPromptRepository = new PromptFileRepository(path.join(__dirname, './Prompts.json'));
 /**
  * Adds prompt handlers to the MCP server for generating documentation.
  * 
@@ -49,71 +52,58 @@ import {
  */
 export function addPrompts(server: Server): void {
 
+   const readmePrompt = getMcpPrompt(generateReadmePromptId, repository);
+   if (!readmePrompt) {
+      throw new Error('Readme prompt not found');
+   }
    // Prompts
    server.setRequestHandler(ListPromptsRequestSchema, async (): Promise<ListPromptsResult> => {
       return Promise.resolve({
-         prompts: [{
-            name: generateReadmePromptName,
-            description: generateReadmePromptDesc,
-            arguments: [
-               {
-                  name: rootDirectoryParamName,
-                  description: rootDirectoryParamDesc,
-                  required: true
-               },
-               {
-                  name: languagesParamName,
-                  description: languagesParamDesc,
-                  required: false
-               },
-               {
-                  name: wordsPerModuleParamName,
-                  type: 'number',
-                  description: wordsPerModuleParamDesc,
-                  required: false
-               }               
-            ]
-         },
-         {
-            name: generateComponentC4DiagramPromptName,
-            description: generateComponentC4DiagramPromptDesc,
-            arguments: [
-               {
-                  name: rootDirectoryParamName,
-                  description: rootDirectoryParamDesc,
-                  required: true,
-               }
-            ]
-         },
-         {
-            name: generateRollupC4DiagramPromptName,
-            description: generateRollupC4DiagramPromptDesc,
-            arguments: [
-               {
-                  name: rootDirectoryParamName,
-                  description: rootDirectoryParamDesc,
-                  required: true
-               },
-               {
-                  name: c4TypeParamName,
-                  description: c4TypeParamDesc,
-                  required: true
-               }
-            ]
-         }]
+         prompts: [
+            readmePrompt,
+            {
+               name: generateComponentC4DiagramPromptName,
+               description: generateComponentC4DiagramPromptDesc,
+               arguments: [
+                  {
+                     name: rootDirectoryParamName,
+                     description: rootDirectoryParamDesc,
+                     required: true,
+                  }
+               ]
+            },
+            {
+               name: generateRollupC4DiagramPromptName,
+               description: generateRollupC4DiagramPromptDesc,
+               arguments: [
+                  {
+                     name: rootDirectoryParamName,
+                     description: rootDirectoryParamDesc,
+                     required: true
+                  },
+                  {
+                     name: c4TypeParamName,
+                     description: c4TypeParamDesc,
+                     required: true
+                  }
+               ]
+            }
+         ]
       });
    });
 
    server.setRequestHandler(GetPromptRequestSchema, async (request: GetPromptRequest): Promise<GetPromptResult> => {
 
-      if (request.params.name === generateReadmePromptName) {
+      const readmePrompt = getMcpPrompt(generateReadmePromptId, repository);
+
+      if (request.params.name === readmePrompt?.name) {
 
          const args = request.params.arguments;
 
-         const validatedArgs = generateReadmePrompt.validateArgs ({
-            rootDirectory: args?.RootDirectory,
-            languages: args?.Languages,
-            wordsPerModule: args?.WordsPerModule
+         const expandedPrompt = expandPrompt (generateReadmePromptId, repository, {
+            rootDirectory: args?.rootDirectory,
+            languages: args?.languages ?? undefined,
+            wordCount: args?.wordCount ?? undefined
          });
 
          return {
@@ -122,7 +112,7 @@ export function addPrompts(server: Server): void {
                   role: 'user',
                   content: {
                      type: 'text',
-                     text: generateReadmePrompt.expandPrompt(validatedArgs)
+                     text: expandedPrompt
                   },
                },
             ],

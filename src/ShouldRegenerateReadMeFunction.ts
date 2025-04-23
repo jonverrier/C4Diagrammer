@@ -11,7 +11,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { throwMcpInvalidArgs } from "./McpThrow.js";
-import { IFunction, IArgs, FnValidateArgs, FnExecuteFunction } from './McpBridgeTypes.js';
+import { IMcpFunction, IArgs, FnValidateArgs, FnExecuteFunction } from './McpBridgeTypes.js';
 import { C4DiagrammerName, shouldRegenerateReadmeFunctionDesc, shouldRegenerateReadmeFunctionName } from "./UIStrings.js";
 
 export interface IShouldRegenerateReadMeArgs extends IArgs {
@@ -88,7 +88,7 @@ export function shouldRegenerateReadMe (args: IShouldRegenerateReadMeArgs): stri
    }   
 }
 
-export let shouldRegenerateReadMeFunction : IFunction = {
+export let shouldRegenerateReadMeFunction : IMcpFunction = {
    name: shouldRegenerateReadmeFunctionName,
    description: shouldRegenerateReadmeFunctionDesc,
    validateArgs: validateShouldRegenerateReadmeArgs as unknown as FnValidateArgs,

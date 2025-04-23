@@ -9,7 +9,7 @@
 
 import { throwMcpInvalidArgs } from "./McpThrow.js";
 import { isValidC4DiagramType } from "./MermaidTypes.js";
-import { IPrompt, IArgs, FnValidateArgs, FnExpandPrompt } from './McpBridgeTypes.js';
+import { IMcpPrompt, IArgs, FnValidateArgs, FnExpandPrompt } from './McpBridgeTypes.js';
 import { C4DiagrammerName, generateRollupC4DiagramPromptName, generateRollupC4DiagramPromptDesc } from "./UIStrings.js";
 
 export interface IGenerateRollupC4DiagramArgs extends IArgs {
@@ -73,7 +73,7 @@ function expandGenerateRollupC4DiagramPrompt(args: IGenerateRollupC4DiagramArgs)
    return prompt;
 }  
 
-export let generateRollupC4Prompt : IPrompt = {
+export let generateRollupC4Prompt : IMcpPrompt = {
    name: generateRollupC4DiagramPromptName,
    description: generateRollupC4DiagramPromptDesc,
    validateArgs: validateGenerateRollupC4DiagramArgs as unknown as FnValidateArgs,
