@@ -63,7 +63,13 @@
             "name": "c4Type",
             "description": "The type of C4 diagram to generate. C4Context, C4Container, C4Component, or C4Deployment",
             "required": true,
-            "type": "kString"
+            "type": "kEnum",
+            "allowedValues": [
+               "C4Context",
+               "C4Container",
+               "C4Component",
+               "C4Deployment"
+            ]
          }
       ]
    }        

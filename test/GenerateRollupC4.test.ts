@@ -50,7 +50,7 @@ describe('GenerateRollupC4Prompt', () => {
         .to.throw();
     });
 
-    it('should throw error when c4Type is invalid', () => {
+    it('should throw error when c4Type is invalid type', () => {
       const args = {
         rootDirectory: '/test/path',
         c4Type:  1 as any
@@ -59,6 +59,16 @@ describe('GenerateRollupC4Prompt', () => {
       expect(() => repository.expandUserPrompt(rollupC4Prompt, args))
         .to.throw();
     });
+
+    it('should throw error when c4Type is not an allowed value', () => {
+      const args = {
+        rootDirectory: '/test/path',
+        c4Type: 'InvalidC4Type'
+      };
+      
+      expect(() => repository.expandUserPrompt(rollupC4Prompt, args))
+        .to.throw();
+    });    
 
     it('should throw error when args is null', () => {
       expect(() => repository.expandUserPrompt(rollupC4Prompt, null as any))

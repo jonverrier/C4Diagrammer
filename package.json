@@ -12,6 +12,7 @@
   ],
   "scripts": {
     "build": "tsc && npm run copy-assets",
+    "install": "npm install ../PromptRepository",
     "copy-assets": "copyfiles -u 1 src/**/*.json dist/src/",
     "test": "mocha --require ts-node/register --extensions ts,js test/*.test.ts --exit",
     "test-mini": "mocha --require ts-node/register --extensions ts,js test\\GenerateReadMeC4.test.ts --exit",

@@ -6,24 +6,37 @@
  */
 
 import { ListPromptsResult } from "@modelcontextprotocol/sdk/types.js";
-import {IPrompt, IPromptRepository, EParameterType} from "prompt-repository";
+import {IPrompt, IPromptRepository} from "prompt-repository";
 
+/**
+ * Base interface for argument objects
+ */
 export interface IArgs {
 }
 
+/**
+ * Function type for validating arguments
+ */
 export type FnValidateArgs = (args: IArgs) => IArgs;
-export type FnExpandPrompt = (args: IArgs) => string;
+
+/**
+ * Function type for executing MCP functions
+ */
 export type FnExecuteFunction = (args: IArgs) => Promise<string>;
 
+/**
+ * Base interface for MCP elements with name and description
+ */
 export interface IMcpElement
  {
    name: string;
    description: string;
 }
 
+/**
+ * Interface for MCP prompts with optional argument definitions
+ */
 export interface IMcpPrompt extends IMcpElement {
-   validateArgs: FnValidateArgs;   
-   expandPrompt: FnExpandPrompt;
    arguments?: {
       name: string;
       description: string;
@@ -32,11 +45,17 @@ export interface IMcpPrompt extends IMcpElement {
    }[];
 }
 
+/**
+ * Interface for executable MCP functions
+ */
 export interface IMcpFunction extends IMcpElement {
    validateArgs: FnValidateArgs;     
    execute: FnExecuteFunction;
 }
 
+/**
+ * Converts IPrompt to IMcpPrompt format
+ */
 export function toMcpPrompt(prompt: IPrompt): IMcpPrompt {
    return {
       name: prompt.name,
@@ -45,14 +64,14 @@ export function toMcpPrompt(prompt: IPrompt): IMcpPrompt {
          name: param.name,
          description: param.description ?? "",
          required: param.required,
-         type: param.type === "kString" ? "string" : "number"
+         type: param.type === "kString" ? "string" : param.type === "kEnum" ? "string" : "number"
       })) ?? [],
-      expandPrompt: (args: IArgs) => "", // Default expansion returns empty string
-      validateArgs: (args: IArgs) => args // Default validation just returns args
    };
 }
 
-
+/**
+ * Converts IMcpPrompt to ListPromptsResult format
+ */
 function toListPromptResult(prompt: IMcpPrompt): ListPromptsResult['prompts'][0] {
    return {
       name: prompt.name,
@@ -61,7 +80,9 @@ function toListPromptResult(prompt: IMcpPrompt): ListPromptsResult['prompts'][0]
    };
 }
 
-
+/**
+ * Retrieves a prompt by ID and converts to MCP format
+ */
 export function getMcpPrompt(promptId: string, repository: IPromptRepository): ListPromptsResult['prompts'][0]  | undefined {
    const prompt = repository.getPrompt(promptId);
    if (!prompt) {
@@ -70,6 +91,9 @@ export function getMcpPrompt(promptId: string, repository: IPromptRepository): L
    return toListPromptResult (toMcpPrompt(prompt));
 }
 
+/**
+ * Expands a prompt template with provided parameters
+ */
 export function expandPrompt(promptId: string, repository: IPromptRepository, params: { [key: string]: string | undefined }): string {
    
    const prompt = repository.getPrompt(promptId);
