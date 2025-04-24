@@ -178,7 +178,7 @@ C4Container
 
 ## Architecture
 
-The MCP Documenter follows a modular architecture designed for extensibility and maintainability. The system is composed of several key components as shown in the C4 Container diagram above:
+The C4Diagrammer follows a modular architecture designed for extensibility and maintainability. The system is composed of several key components as shown in the C4 Container diagram above:
 
 ### Core Components
 
