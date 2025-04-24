@@ -122,7 +122,7 @@ C4Context
 
 Its not bad. It has picked up all the major components, and correctly linked them. IMHO you would take this kind of thing if you had a million lines of VB and didnt know where to start with it. 
 
-Here is another  - this time one MCP Doc drew of itself:
+Here is another  - this time one C4Diagrammer drew of itself:
 
 ```mermaid
 C4Container
