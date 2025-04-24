@@ -261,17 +261,16 @@ The same qualifier applies to 'Chain of Thought'.
    ```
 
 2. Install dependencies:
-   ```bash
    Clone and install the related ['PromptRepository'] (https://github.com/jonverrier/PromptRepository) repo.
-   npm install
+
+   ```bash
+   npm run install
    ```
 
 3. Build the project:
    ```bash
    npm run build
    ```
-4. Install the [Anthropic filesystem MCP server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem).
-
 
 ## Testing
 
