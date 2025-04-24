@@ -1,32 +1,22 @@
 ```mermaid
 C4Component
-    title C4Diagrammer Test Architecture
+    title C4Diagrammer Test Suite Architecture
 
-    Person(developer, "Test Developer", "Developer maintaining C4Diagrammer tests")
+    Person(tester, "Test Developer", "Developer running tests")
     
-    System_Boundary(test_suite, "C4Diagrammer Test Suite") {
-        Container(core_tests, "Core Tests", "TypeScript", "Core functionality tests")
-        Container(utility_tests, "Utility Tests", "TypeScript", "Support functionality tests")
-        
-        Component(parse_mermaid_test, "ParseMermaid.test", "TypeScript", "Tests Mermaid parsing")
-        Component(generate_rollup_test, "GenerateRollupC4.test", "TypeScript", "Tests high-level C4 generation")
-        Component(generate_component_test, "GenerateComponentC4.test", "TypeScript", "Tests component diagram generation")
-        Component(generate_readme_test, "GenerateReadMeC4.test", "TypeScript", "Tests README generation")
-        
-        Component(regenerate_test, "ShouldRegenerateReadMe.test", "TypeScript", "Tests README regeneration logic")
-        Component(file_functions_test, "FileFunctions.test", "TypeScript", "Tests file operations")
-        Component(preview_test, "PreviewMermaid.test", "TypeScript", "Tests diagram preview")
+    System_Boundary(test_suite, "Test Suite") {
+        Container(diagram_tests, "Diagram Generation Tests", "TypeScript", "Tests for C4 and Mermaid diagram generation")
+        Container(parser_tests, "Parser Tests", "TypeScript", "Tests for Mermaid parsing functionality")
+        Container(file_tests, "File Operation Tests", "TypeScript", "Tests for file system operations")
+        Container(preview_tests, "Preview Tests", "TypeScript", "Tests for diagram preview functionality")
     }
 
-    System_Ext(test_runner, "Mocha", "Test execution environment")
-    System_Ext(typescript, "TypeScript Compiler", "Test compilation")
+    System_Ext(typescript, "TypeScript Compiler", "Compiles test code")
+    System_Ext(test_runner, "Test Runner", "Executes test suite")
 
-    Rel(developer, core_tests, "Writes and maintains")
-    Rel(developer, utility_tests, "Writes and maintains")
-    Rel(core_tests, parse_mermaid_test, "Contains")
-    Rel(core_tests, generate_rollup_test, "Contains")
-    Rel(core_tests, generate_component_test, "Contains")
-    Rel(core_tests, generate_readme_test, "Contains")
-    Rel(utility_tests, regenerate_test, "Contains")
-    Rel(utility_tests, file_functions_test, "Contains")
-    Rel(utility_tests, preview_test, "Contains")
+    Rel(tester, diagram_tests, "Runs")
+    Rel(diagram_tests, typescript, "Compiled by")
+    Rel(diagram_tests, test_runner, "Executed by")
+    Rel(diagram_tests, parser_tests, "Validates using")
+    Rel(preview_tests, file_tests, "Uses")
+``` 

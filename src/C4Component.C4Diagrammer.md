@@ -1,30 +1,23 @@
 ```mermaid
 C4Component
-    title C4Diagrammer Component Architecture
+    title C4Diagrammer Source Code Architecture
 
-    Person(user, "Developer", "Software developer using C4Diagrammer")
+    Person(developer, "Developer", "Software developer using C4Diagrammer")
     
-    System_Boundary(c4_diagrammer, "C4Diagrammer Tool") {
-        Container(core, "Core Module", "TypeScript", "Core MCP server functionality")
-        Container(mermaid_processor, "Mermaid Processor", "TypeScript", "Mermaid diagram processing and validation")
-        Container(file_ops, "File Operations", "TypeScript", "File system operations")
-        
-        Component(mcp_functions, "McpFunctions", "TypeScript", "Implements MCP server handlers")
-        Component(generate_rollup, "GenerateRollupC4", "TypeScript", "Generates high-level C4 diagrams")
-        Component(process_mermaid, "ProcessMermaid", "TypeScript", "Core Mermaid processing")
-        Component(parse_mermaid, "ParseMermaid", "TypeScript", "Mermaid syntax validation")
-        Component(preview_mermaid, "PreviewMermaid", "TypeScript", "Browser-based preview")
-        Component(file_functions, "FileFunctions", "TypeScript", "File system operations")
+    System_Boundary(c4diagrammer, "C4Diagrammer") {
+        Container(core, "Core Module", "TypeScript", "Core application functionality")
+        Container(mermaid, "Mermaid Processing", "TypeScript", "Mermaid diagram handling")
+        Container(file, "File Handler", "TypeScript", "File system operations")
+        Container(mcp, "MCP Bridge", "TypeScript", "Model Context Protocol integration")
     }
 
     System_Ext(browser, "Web Browser", "For diagram preview")
-    System_Ext(filesystem, "File System", "Local storage")
+    System_Ext(filesystem, "File System", "For reading/writing files")
 
-    Rel(user, core, "Uses")
-    Rel(core, mcp_functions, "Implements")
-    Rel(core, generate_rollup, "Uses")
-    Rel(mermaid_processor, process_mermaid, "Uses")
-    Rel(mermaid_processor, parse_mermaid, "Validates")
-    Rel(mermaid_processor, preview_mermaid, "Renders")
-    Rel(preview_mermaid, browser, "Opens")
-    Rel(file_ops, file_functions, "Uses")
+    Rel(developer, core, "Uses")
+    Rel(core, mcp, "Integrates with")
+    Rel(core, mermaid, "Processes diagrams")
+    Rel(core, file, "Handles files")
+    Rel(mermaid, browser, "Previews diagrams")
+    Rel(file, filesystem, "Reads/Writes")
+``` 

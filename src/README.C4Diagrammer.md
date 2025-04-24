@@ -1,47 +1,51 @@
-# Source Directory Documentation
+# C4Diagrammer Source Code Documentation
 
 ## Core Files
 
-### McpFunctions.ts
-Core module that implements the Model Context Protocol server functionality. Provides handlers for various tools including Mermaid diagram detection, preview, and file operations. Implements the server's request handlers and tool registration system. Contains comprehensive type definitions and error handling for all supported operations.
-
-### GenerateRollupC4Prompt.ts
-Implements functionality for generating high-level C4 architecture diagrams. Handles validation and prompt generation for creating C4 Context or Container level diagrams that aggregate component-level details from across the codebase. Includes robust argument validation and detailed prompt construction following Mermaid.js syntax and C4 model conventions.
-
-### UIStrings.ts
-Central repository for string constants used throughout the application. Contains definitions for tool names, descriptions, parameter names, and their descriptions. Organized by functionality sections including README generation, C4 diagram generation, and file system operations. Ensures consistent string usage across the application.
-
-## Mermaid Processing
-
-### ProcessMermaidFunctions.ts
-Implements core functionality for processing Mermaid.js diagrams, including detection, parsing, and preview capabilities. Handles diagram validation and browser-based visualization.
-
-### ParseMermaid.ts
-Provides parsing functionality for Mermaid diagrams, ensuring syntactic correctness and proper structure. Includes validation logic for different diagram types.
-
-### PreviewMermaid.ts
-Handles the browser-based preview functionality for Mermaid diagrams. Implements rendering and display logic for diagram visualization.
-
-## Types and Utilities
-
-### McpBridgeTypes.ts
-Defines core type interfaces for the Model Context Protocol bridge implementation. Includes types for prompts, arguments, and function signatures.
-
-### MermaidTypes.ts
-Contains type definitions and validation logic for Mermaid diagram types. Includes enums and interfaces for different diagram formats.
-
-### McpThrow.ts
-Implements error handling utilities for the Model Context Protocol implementation. Provides standardized error throwing mechanisms.
-
-## File Operations
-
-### FileFunctions.ts
-Implements file system operations including reading, writing, and directory listing. Provides robust error handling and file manipulation capabilities.
-
-## Entry Points
-
 ### index.ts
-Main entry point for the C4Diagrammer tool. Exports core functionality and initializes the application.
+Entry point for the C4Diagrammer application that exports the main functionality and types.
 
 ### McpIndex.ts
-Secondary entry point specifically for Model Context Protocol functionality. Handles MCP server initialization and configuration. 
+Main integration point with the Model Context Protocol (MCP), setting up the core functionality and exports.
+
+### McpBridgeTypes.ts
+Defines the core TypeScript interfaces and types for the MCP bridge implementation. Includes interfaces for arguments, validation functions, and prompt handling. Provides utilities for converting between different prompt formats.
+
+### McpFunctions.ts
+Implements the main MCP function implementations and business logic for the C4Diagrammer.
+
+### McpThrow.ts
+Error handling utilities for MCP-related operations, providing standardized error throwing mechanisms.
+
+## Mermaid Diagram Processing
+
+### ProcessMermaidFunctions.ts
+Core functionality for working with Mermaid diagrams, including type detection, parsing, and preview capabilities. Implements argument validation and browser-based diagram processing.
+
+### ParseMermaid.ts
+Implements the parsing logic for Mermaid diagrams, handling syntax validation and diagram type detection.
+
+### PreviewMermaid.ts
+Provides functionality to preview Mermaid diagrams in a browser, supporting both direct string input and file-based diagrams.
+
+### MermaidTypes.ts
+Type definitions and interfaces specific to Mermaid diagram processing and validation.
+
+## File and Documentation Handling
+
+### FileFunctions.ts
+Implements file system operations including reading, writing, and directory listing with proper error handling and validation.
+
+### ShouldRegenerateReadMeFunction.ts
+Logic for determining when README.C4Diagrammer.md files should be regenerated based on source file changes.
+
+## Configuration and Constants
+
+### UIStrings.ts
+Centralized location for string constants used throughout the application, including tool names, parameter descriptions, and documentation strings.
+
+### PromptIds.ts
+Defines constant identifiers for various prompts used in the system.
+
+### McpPrompts.ts
+Implements prompt handling and management for the MCP integration, including prompt expansion and parameter validation. 
