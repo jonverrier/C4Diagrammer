@@ -207,7 +207,7 @@ The MCP Documenter follows a modular architecture designed for extensibility and
 
 Please note that these prompts have been quite extensively tested with Claude Sonnet 3.5 (from Cursor), and Claude Opus 3.7 (from Claude Desktop). In general, both models can produce pretty good diagrams. In testing prior versions of this software with OpenAI GPT40 and Gemini 1.5, the error rate was much higher - hence the more detailed prompts. Your mileage may vary. 
 
-Personally I would only do this with the Claude famility of models which do seem to be the state of the art for cdoe generation - and Mermaid.js makdown is a niche sub flavour of code generation. 
+Personally I would only do this with the Claude famility of models which do seem to be the state of the art for cdoe generation - and Mermaid.js markdown is a niche sub flavour of code generation. 
 
 
 1) To generate documentation for each directory containing source code: 
