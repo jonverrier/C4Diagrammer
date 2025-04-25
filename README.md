@@ -282,7 +282,7 @@ npm run test
 
 ## Usage
 
-To use the MCP server from a host, you need to update your AI development environment. Common configuration settings are shown below:
+To use the MCP server from a host, you need to update your AI development environment. Common configuration settings are shown below. The second argument limits file system access to the specified directory & all items below it.
 
 ```json
 {
@@ -292,9 +292,7 @@ To use the MCP server from a host, you need to update your AI development enviro
       "args": ["YourCodeRoot/C4Diagrammer/dist/src/index.js", "YourCodeRoot"]
     }
   }
-}
-
-The second argument limits file system access to the specified directory & all items below it. 
+} 
 ```
 
 For specific IDE setup instructions, refer to:
