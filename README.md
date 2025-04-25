@@ -289,14 +289,12 @@ To use the MCP server from a host, you need to update your AI development enviro
   "mcpServers": {
     "mcp-documenter": {
       "command": "node",
-      "args": ["YourCodeRoot/C4Diagrammer/dist/src/index.js"]
-    },
-    "mcp-filesystem": {
-      "command": "node",  
-      "args": ["YourCodeRoot/McpFS/dist/index.js", "YourCodeRoot"]
-    } 
+      "args": ["YourCodeRoot/C4Diagrammer/dist/src/index.js", "YourCodeRoot"]
+    }
   }
 }
+
+The second argument limits file system access to the specified directory & all items below it. 
 ```
 
 For specific IDE setup instructions, refer to:
