@@ -286,7 +286,7 @@ To use the MCP server from a host, you need to update your AI development enviro
 
 ```json
 {
-  "mcpServers": {
+  "C4Diagrammer": {
     "mcp-documenter": {
       "command": "node",
       "args": ["YourCodeRoot/C4Diagrammer/dist/src/index.js", "YourCodeRoot"]
